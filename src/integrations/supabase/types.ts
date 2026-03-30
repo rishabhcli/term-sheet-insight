@@ -14,7 +14,193 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      event_logs: {
+        Row: {
+          created_at: string
+          event_name: string
+          id: string
+          payload: Json | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_name: string
+          id?: string
+          payload?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_name?: string
+          id?: string
+          payload?: Json | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scenario_snapshots: {
+        Row: {
+          active_clause_ids: Json
+          created_at: string
+          exit_value: number
+          id: string
+          owner_id: string | null
+          scenario_id: string | null
+          snapshot_payload: Json
+          title: string | null
+        }
+        Insert: {
+          active_clause_ids?: Json
+          created_at?: string
+          exit_value: number
+          id?: string
+          owner_id?: string | null
+          scenario_id?: string | null
+          snapshot_payload: Json
+          title?: string | null
+        }
+        Update: {
+          active_clause_ids?: Json
+          created_at?: string
+          exit_value?: number
+          id?: string
+          owner_id?: string | null
+          scenario_id?: string | null
+          snapshot_payload?: Json
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scenario_snapshots_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scenarios: {
+        Row: {
+          base_shareholders: Json
+          clean_terms: Json
+          created_at: string
+          currency: string
+          description: string | null
+          exit_range: Json
+          id: string
+          investment_amount: number
+          is_preset: boolean
+          is_public: boolean
+          name: string
+          owner_id: string | null
+          pre_money_valuation: number
+          round_label: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          base_shareholders: Json
+          clean_terms: Json
+          created_at?: string
+          currency?: string
+          description?: string | null
+          exit_range: Json
+          id?: string
+          investment_amount: number
+          is_preset?: boolean
+          is_public?: boolean
+          name: string
+          owner_id?: string | null
+          pre_money_valuation: number
+          round_label: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          base_shareholders?: Json
+          clean_terms?: Json
+          created_at?: string
+          currency?: string
+          description?: string | null
+          exit_range?: Json
+          id?: string
+          investment_amount?: number
+          is_preset?: boolean
+          is_public?: boolean
+          name?: string
+          owner_id?: string | null
+          pre_money_valuation?: number
+          round_label?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      share_links: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_public: boolean
+          scenario_snapshot_id: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_public?: boolean
+          scenario_snapshot_id: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_public?: boolean
+          scenario_snapshot_id?: string
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "share_links_scenario_snapshot_id_fkey"
+            columns: ["scenario_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "scenario_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
