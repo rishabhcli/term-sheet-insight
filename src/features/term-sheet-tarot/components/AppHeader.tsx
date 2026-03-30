@@ -13,6 +13,7 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
 
   const navLinks = [
     { to: '/', label: 'Simulator' },
+    { to: '/compare', label: 'Compare' },
     { to: '/scenarios', label: 'Scenarios' },
     { to: '/about', label: 'About' },
     { to: '/how-it-works', label: 'How It Works' },

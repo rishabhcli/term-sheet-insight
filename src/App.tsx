@@ -31,6 +31,7 @@ const App = () => (
             <Route path="/fallback" element={<FallbackPage />} />
             <Route path="/scenarios" element={<ScenariosPage />} />
             <Route path="/build" element={<BuildScenarioPage />} />
+            <Route path="/compare" element={<ComparePage />} />
             <Route path="/share/:slug" element={<SharePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-it-works" element={<HowItWorksPage />} />
