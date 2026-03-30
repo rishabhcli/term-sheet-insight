@@ -30,8 +30,8 @@ function safeSnapshot(scenario: ScenarioDefinition, clauseIds: string[], exitVal
   try {
     return buildSnapshot(scenario, clauseIds, CLAUSE_CATALOG, exitValue);
   } catch (e) {
+    trackError('snapshot_computation', e);
     console.error('Snapshot computation error:', e);
-    // Return baseline as fallback
     return buildSnapshot(scenario, [], CLAUSE_CATALOG, exitValue);
   }
 }
