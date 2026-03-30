@@ -59,6 +59,7 @@ const defaultShareholders: BaseShareholder[] = [
 export function ScenarioBuilderForm() {
   const navigate = useNavigate();
   const loadScenario = useSimulatorStore(s => s.loadScenario);
+  const { user } = useAuth();
   const reducedMotion = useReducedMotion();
 
   const [name, setName] = useState('');
