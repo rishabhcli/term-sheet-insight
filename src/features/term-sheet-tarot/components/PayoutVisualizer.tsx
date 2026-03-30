@@ -17,6 +17,12 @@ export function PayoutVisualizer() {
     pool: 'bg-payout-pool',
     advisors: 'bg-payout-advisor',
   };
+  const dotColorMap: Record<string, string> = {
+    investor: 'bg-payout-investor',
+    founders: 'bg-payout-founder',
+    pool: 'bg-payout-pool',
+    advisors: 'bg-payout-advisor',
+  };
   const labelMap: Record<string, string> = {
     investor: 'Investor',
     founders: 'Founders',
@@ -34,18 +40,22 @@ export function PayoutVisualizer() {
       cleanPayout: cleanHolder?.payout || 0,
       percentage: holder?.percentage || 0,
       color: colorMap[id] || 'bg-muted',
+      dotColor: dotColorMap[id] || 'bg-muted',
     };
   }).filter(p => p.payout > 0 || p.cleanPayout > 0);
 
   return (
-    <div className="space-y-4">
+    <div className="glass-surface rounded-xl p-5 space-y-4 relative overflow-hidden">
+      {/* Top edge glow */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+
       <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-sm uppercase tracking-wider text-muted-foreground">
+        <h2 className="text-[10px] font-display uppercase tracking-[0.15em] text-muted-foreground">
           Payout at Exit
         </h2>
         <motion.span
           key={exitValue}
-          className="font-display text-lg font-bold text-primary"
+          className="font-heading text-lg font-bold text-gold-shimmer"
           initial={reducedMotion ? false : { opacity: 0.5, y: -2 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
@@ -55,8 +65,8 @@ export function PayoutVisualizer() {
       </div>
 
       {/* Stacked bar */}
-      <div className="relative h-14 rounded-lg overflow-hidden bg-secondary flex" role="img" aria-label="Payout distribution bar">
-        {sortedPayouts.map(p => (
+      <div className="relative h-12 rounded-lg overflow-hidden bg-secondary/60 flex" role="img" aria-label="Payout distribution bar">
+        {sortedPayouts.map((p, i) => (
           <motion.div
             key={p.id}
             className={`${p.color} h-full relative overflow-hidden`}
@@ -66,17 +76,19 @@ export function PayoutVisualizer() {
             title={`${p.label}: ${formatCurrency(p.payout)} (${p.percentage.toFixed(1)}%)`}
           >
             {/* Inner shine */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/15 to-transparent pointer-events-none" />
+            {/* Separator line */}
+            {i > 0 && <div className="absolute left-0 top-1 bottom-1 w-px bg-background/30" />}
 
             <AnimatePresence mode="wait">
-              {p.percentage > 12 && (
+              {p.percentage > 14 && (
                 <motion.span
                   key={`${p.id}-${formatCurrency(p.payout)}`}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ delay: 0.15, duration: 0.2 }}
-                  className="absolute inset-0 flex items-center justify-center text-xs font-display font-bold text-primary-foreground drop-shadow-sm"
+                  className="absolute inset-0 flex items-center justify-center text-[11px] font-display font-bold text-primary-foreground drop-shadow-md tabular-nums"
                 >
                   {formatCurrency(p.payout)}
                 </motion.span>
@@ -87,23 +99,19 @@ export function PayoutVisualizer() {
       </div>
 
       {/* Legend */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {sortedPayouts.map(p => {
           const delta = p.payout - p.cleanPayout;
           const hasDelta = Math.abs(delta) > 1;
           return (
             <motion.div key={p.id} className="space-y-1" layout>
               <div className="flex items-center gap-2">
-                <motion.div
-                  className={`w-3 h-3 rounded-sm ${p.color}`}
-                  animate={hasDelta ? { scale: [1, 1.3, 1] } : { scale: 1 }}
-                  transition={{ duration: 0.35 }}
-                />
-                <span className="text-xs text-muted-foreground font-body">{p.label}</span>
+                <div className={`w-2.5 h-2.5 rounded-sm ${p.dotColor} shadow-sm`} />
+                <span className="text-[11px] text-muted-foreground font-body">{p.label}</span>
               </div>
               <motion.div
                 key={`val-${p.payout}`}
-                className="font-display text-sm font-bold text-foreground"
+                className="font-heading text-sm font-bold text-foreground tabular-nums"
                 initial={reducedMotion ? false : { opacity: 0.6 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.25 }}
@@ -118,7 +126,7 @@ export function PayoutVisualizer() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 4 }}
                     transition={{ type: 'spring' as const, stiffness: 300, damping: 25, delay: 0.1 }}
-                    className={`text-xs font-display ${delta > 0 ? 'text-metric-positive' : 'text-metric-negative'}`}
+                    className={`text-[11px] font-display tabular-nums ${delta > 0 ? 'text-metric-positive' : 'text-metric-negative'}`}
                   >
                     {delta > 0 ? '+' : '−'}{formatCurrency(Math.abs(delta))}
                   </motion.div>

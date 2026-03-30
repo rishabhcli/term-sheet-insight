@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../domain/types';
 import { buildSnapshot } from '../domain/snapshot-builder';
 import { CLAUSE_CATALOG, getCanonicalScenario, getScenarioById, PRESET_SCENARIOS } from '../data/scenarios';
+import { trackEvent, trackError } from '../services/observability';
 
 interface SimulatorState {
   mode: 'simulator' | 'demo';
@@ -29,8 +30,8 @@ function safeSnapshot(scenario: ScenarioDefinition, clauseIds: string[], exitVal
   try {
     return buildSnapshot(scenario, clauseIds, CLAUSE_CATALOG, exitValue);
   } catch (e) {
+    trackError('snapshot_computation', e);
     console.error('Snapshot computation error:', e);
-    // Return baseline as fallback
     return buildSnapshot(scenario, [], CLAUSE_CATALOG, exitValue);
   }
 }
@@ -53,6 +54,7 @@ export const useSimulatorStore = create<SimulatorState>((set, get) => ({
   loadScenario: (scenario) => {
     const exitValue = scenario.exitRange.default;
     const clean = safeSnapshot(scenario, [], exitValue);
+    trackEvent({ type: 'scenario_loaded', scenarioId: scenario.id, source: scenario.isPreset ? 'preset' : 'custom' });
     set({
       scenario,
       scenarioId: scenario.id,
@@ -66,10 +68,12 @@ export const useSimulatorStore = create<SimulatorState>((set, get) => ({
 
   toggleClause: (clauseId) => {
     const { activeClauseIds, scenario, exitValue } = get();
-    const next = activeClauseIds.includes(clauseId)
+    const wasActive = activeClauseIds.includes(clauseId);
+    const next = wasActive
       ? activeClauseIds.filter(id => id !== clauseId)
       : [...activeClauseIds, clauseId];
     const snapshot = safeSnapshot(scenario, next, exitValue);
+    trackEvent({ type: 'clause_toggled', clauseId, active: !wasActive, activeCount: next.length });
     set({ activeClauseIds: next, currentSnapshot: snapshot });
   },
 
