@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../domain/types';
 import { buildSnapshot } from '../domain/snapshot-builder';
 import { CLAUSE_CATALOG, getCanonicalScenario, getScenarioById, PRESET_SCENARIOS } from '../data/scenarios';
+import { trackEvent, trackError } from '../services/observability';
 
 interface SimulatorState {
   mode: 'simulator' | 'demo';
