@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { AppHeader } from '../features/term-sheet-tarot/components/AppHeader';
 import { LegalFootnote } from '../features/term-sheet-tarot/components/LegalFootnote';
@@ -7,14 +8,20 @@ import { PRESET_SCENARIOS, CLAUSE_CATALOG } from '../features/term-sheet-tarot/d
 import { buildSnapshot } from '../features/term-sheet-tarot/domain/snapshot-builder';
 import { formatCurrency, formatPercent } from '../features/term-sheet-tarot/domain/formatting';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../features/term-sheet-tarot/domain/types';
-import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown } from 'lucide-react';
+import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown, Link2, Check } from 'lucide-react';
 import { exportComparisonPDF } from '../features/term-sheet-tarot/services/pdf-comparison-export';
 
-function useScenarioSide(scenarios: ScenarioDefinition[]) {
-  const [scenarioId, setScenarioId] = useState(scenarios[0]?.id ?? '');
-  const [activeClauseIds, setActiveClauseIds] = useState<string[]>([]);
+interface SideInit {
+  scenarioId?: string;
+  clauseIds?: string[];
+  exitValue?: number;
+}
+
+function useScenarioSide(scenarios: ScenarioDefinition[], init?: SideInit) {
+  const [scenarioId, setScenarioId] = useState(init?.scenarioId && scenarios.some(s => s.id === init.scenarioId) ? init.scenarioId : scenarios[0]?.id ?? '');
+  const [activeClauseIds, setActiveClauseIds] = useState<string[]>(init?.clauseIds ?? []);
   const scenario = scenarios.find(s => s.id === scenarioId) ?? scenarios[0];
-  const [exitValue, setExitValue] = useState(scenario.exitRange.default);
+  const [exitValue, setExitValue] = useState(init?.exitValue ?? scenario.exitRange.default);
 
   const toggleClause = (id: string) =>
     setActiveClauseIds(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
@@ -186,9 +193,42 @@ function MetricRow({ label, value, format, reducedMotion }: { label: string; val
 
 export default function ComparePage() {
   const reducedMotion = useReducedMotion();
+  const [searchParams] = useSearchParams();
   const scenarios = PRESET_SCENARIOS;
-  const sideA = useScenarioSide(scenarios);
-  const sideB = useScenarioSide(scenarios);
+
+  // Parse URL state for both sides
+  const initA: SideInit = useMemo(() => ({
+    scenarioId: searchParams.get('a') ?? undefined,
+    clauseIds: searchParams.get('ac') ? searchParams.get('ac')!.split(',') : undefined,
+    exitValue: searchParams.get('ae') ? Number(searchParams.get('ae')) : undefined,
+  }), []);
+
+  const initB: SideInit = useMemo(() => ({
+    scenarioId: searchParams.get('b') ?? undefined,
+    clauseIds: searchParams.get('bc') ? searchParams.get('bc')!.split(',') : undefined,
+    exitValue: searchParams.get('be') ? Number(searchParams.get('be')) : undefined,
+  }), []);
+
+  const sideA = useScenarioSide(scenarios, initA);
+  const sideB = useScenarioSide(scenarios, initB);
+
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = useCallback(() => {
+    const params = new URLSearchParams();
+    params.set('a', sideA.scenarioId);
+    if (sideA.activeClauseIds.length) params.set('ac', sideA.activeClauseIds.join(','));
+    params.set('ae', String(sideA.exitValue));
+    params.set('b', sideB.scenarioId);
+    if (sideB.activeClauseIds.length) params.set('bc', sideB.activeClauseIds.join(','));
+    params.set('be', String(sideB.exitValue));
+
+    const url = `${window.location.origin}/compare?${params.toString()}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [sideA.scenarioId, sideA.activeClauseIds, sideA.exitValue, sideB.scenarioId, sideB.activeClauseIds, sideB.exitValue]);
 
   const founderA = sideA.snapshot.ownership.holderPercentages.find(h => h.holderId === 'founders');
   const founderB = sideB.snapshot.ownership.holderPercentages.find(h => h.holderId === 'founders');
@@ -214,16 +254,25 @@ export default function ComparePage() {
                 <p className="text-xs text-muted-foreground font-body">Pick two scenarios, toggle different clauses, and see the impact side by side.</p>
               </div>
             </div>
-            <button
-              onClick={() => exportComparisonPDF(
-                { scenario: sideA.scenario, snapshot: sideA.snapshot, activeClauseIds: sideA.activeClauseIds, exitValue: sideA.exitValue },
-                { scenario: sideB.scenario, snapshot: sideB.snapshot, activeClauseIds: sideB.activeClauseIds, exitValue: sideB.exitValue },
-              )}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-display hover:bg-primary/20 transition-colors"
-            >
-              <FileDown className="w-4 h-4" />
-              <span className="hidden sm:inline">Export PDF</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/60 border border-border text-foreground text-xs font-display hover:bg-secondary transition-colors"
+              >
+                {copied ? <Check className="w-4 h-4 text-metric-positive" /> : <Link2 className="w-4 h-4" />}
+                <span className="hidden sm:inline">{copied ? 'Copied!' : 'Share Link'}</span>
+              </button>
+              <button
+                onClick={() => exportComparisonPDF(
+                  { scenario: sideA.scenario, snapshot: sideA.snapshot, activeClauseIds: sideA.activeClauseIds, exitValue: sideA.exitValue },
+                  { scenario: sideB.scenario, snapshot: sideB.snapshot, activeClauseIds: sideB.activeClauseIds, exitValue: sideB.exitValue },
+                )}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-display hover:bg-primary/20 transition-colors"
+              >
+                <FileDown className="w-4 h-4" />
+                <span className="hidden sm:inline">Export PDF</span>
+              </button>
+            </div>
           </div>
         </motion.div>
 
