@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useCallback } from 'react';
 import { useSimulatorStore } from '../features/term-sheet-tarot/state/simulator-store';
 import { AppHeader } from '../features/term-sheet-tarot/components/AppHeader';
 import { ScenarioHeader } from '../features/term-sheet-tarot/components/ScenarioHeader';
@@ -10,57 +9,72 @@ import { DealComparisonPanel } from '../features/term-sheet-tarot/components/Dea
 import { ClauseDeck } from '../features/term-sheet-tarot/components/ClauseDeck';
 import { ExitSliderPanel } from '../features/term-sheet-tarot/components/ExitSliderPanel';
 import { ControlSummary } from '../features/term-sheet-tarot/components/ControlSummary';
-import { ResetControls } from '../features/term-sheet-tarot/components/ResetControls';
 import { LegalFootnote } from '../features/term-sheet-tarot/components/LegalFootnote';
 
-export default function SimulatorPage() {
-  const [searchParams] = useSearchParams();
-  const { initializeFromParams, errorState, clearError } = useSimulatorStore();
+export default function DemoPage() {
+  const { initializeDemo, toggleClause, setExitValue, resetToClean, scenario } = useSimulatorStore();
 
   useEffect(() => {
-    if (searchParams.toString()) {
-      initializeFromParams(searchParams);
-    }
+    initializeDemo();
   }, []);
+
+  // Demo hotkeys
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    switch (e.key) {
+      case '1': toggleClause('double-dip'); break;
+      case '2': toggleClause('hidden-pool'); break;
+      case '3': toggleClause('crown-seat'); break;
+      case '0': resetToClean(); break;
+      case '[': {
+        const store = useSimulatorStore.getState();
+        const newVal = Math.max(store.scenario.exitRange.min, store.exitValue - store.scenario.exitRange.step);
+        setExitValue(newVal);
+        break;
+      }
+      case ']': {
+        const store = useSimulatorStore.getState();
+        const newVal = Math.min(store.scenario.exitRange.max, store.exitValue + store.scenario.exitRange.step);
+        setExitValue(newVal);
+        break;
+      }
+    }
+  }, [toggleClause, setExitValue, resetToClean]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   return (
     <div className="min-h-screen bg-background">
-      <AppHeader />
+      <AppHeader minimal />
+
+      <div className="bg-primary/10 border-b border-primary/20 px-4 py-1.5 text-center no-print">
+        <span className="text-xs font-display text-primary">
+          Demo mode · Hotkeys: 1–3 toggle clauses · 0 reset · [ ] adjust exit
+        </span>
+      </div>
 
       <main className="container max-w-7xl mx-auto px-4 py-6 space-y-8">
-        {errorState && (
-          <div className="bg-destructive/10 border border-destructive/30 rounded-lg px-4 py-3 flex items-center justify-between">
-            <span className="text-sm text-destructive font-body">{errorState}</span>
-            <button onClick={clearError} className="text-xs text-destructive underline font-display">Dismiss</button>
-          </div>
-        )}
-
         <ScenarioHeader />
-
-        {/* Outcome Stage - most prominent */}
         <section aria-label="Deal outcomes">
           <FounderDeltaStrip />
         </section>
-
         <VerdictChipRow />
-
         <section aria-label="Payout distribution">
           <PayoutVisualizer />
         </section>
-
-        {/* Two-column layout: Left = comparison + controls, Right = clause deck */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             <DealComparisonPanel />
             <ExitSliderPanel />
             <ControlSummary />
-            <ResetControls />
           </div>
           <div className="lg:col-span-1">
             <ClauseDeck />
           </div>
         </div>
-
         <LegalFootnote />
       </main>
     </div>
