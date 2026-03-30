@@ -18,11 +18,19 @@ export default function ScenariosPage() {
     <div className="min-h-screen bg-background">
       <AppHeader />
       <main className="container max-w-5xl mx-auto px-4 py-8 space-y-8">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-foreground mb-2">Scenario Library</h1>
-          <p className="text-muted-foreground font-body">
-            Choose a preset scenario to explore, or launch directly into the simulator.
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-3xl font-bold text-foreground mb-2">Scenario Library</h1>
+            <p className="text-muted-foreground font-body">
+              Choose a preset scenario to explore, or build your own.
+            </p>
+          </div>
+          <Link
+            to="/build"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground font-display text-sm font-semibold rounded-md hover:bg-primary/90 transition-colors shadow-glow whitespace-nowrap"
+          >
+            + Build Custom
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
