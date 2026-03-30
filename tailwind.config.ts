@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['JetBrains Mono', 'monospace'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +51,22 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        clause: {
+          dilution: "hsl(var(--clause-dilution))",
+          economics: "hsl(var(--clause-economics))",
+          control: "hsl(var(--clause-control))",
+        },
+        metric: {
+          positive: "hsl(var(--metric-positive))",
+          negative: "hsl(var(--metric-negative))",
+          neutral: "hsl(var(--metric-neutral))",
+        },
+        payout: {
+          investor: "hsl(var(--payout-investor))",
+          founder: "hsl(var(--payout-founder))",
+          pool: "hsl(var(--payout-pool))",
+          advisor: "hsl(var(--payout-advisor))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -65,20 +85,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
