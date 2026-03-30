@@ -7,7 +7,8 @@ import { PRESET_SCENARIOS, CLAUSE_CATALOG } from '../features/term-sheet-tarot/d
 import { buildSnapshot } from '../features/term-sheet-tarot/domain/snapshot-builder';
 import { formatCurrency, formatPercent } from '../features/term-sheet-tarot/domain/formatting';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../features/term-sheet-tarot/domain/types';
-import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown } from 'lucide-react';
+import { exportComparisonPDF } from '../features/term-sheet-tarot/services/pdf-comparison-export';
 
 function useScenarioSide(scenarios: ScenarioDefinition[]) {
   const [scenarioId, setScenarioId] = useState(scenarios[0]?.id ?? '');
