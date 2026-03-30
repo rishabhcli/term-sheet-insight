@@ -2,6 +2,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSimulatorStore } from '../state/simulator-store';
 import { formatCurrency, formatPercent } from '../domain/formatting';
 import { TrendingDown, TrendingUp, Shield, ShieldAlert, ShieldOff } from 'lucide-react';
+import { AnimatedNumber } from './AnimatedNumber';
 
 const springTransition = { type: 'spring' as const, stiffness: 300, damping: 25 };
 
@@ -39,8 +40,12 @@ export function FounderDeltaStrip() {
       <MetricTile
         index={0}
         label="Founder Ownership"
-        value={formatPercent(ownershipPct)}
+        rawValue={ownershipPct}
+        format={formatPercent}
         delta={Math.abs(ownershipDelta) > 0.01 ? `${ownershipDelta > 0 ? '+' : ''}${ownershipDelta.toFixed(2)}%` : undefined}
+        rawDelta={ownershipDelta}
+        formatDelta={(v) => `${v > 0 ? '+' : ''}${v.toFixed(2)}%`}
+        showDelta={Math.abs(ownershipDelta) > 0.01}
         deltaDirection={ownershipDelta >= 0 ? 'positive' : 'negative'}
         reducedMotion={reducedMotion}
         icon={ownershipDelta < -0.01 ? TrendingDown : TrendingUp}
@@ -48,8 +53,12 @@ export function FounderDeltaStrip() {
       <MetricTile
         index={1}
         label="Founder Payout"
-        value={formatCurrency(payout)}
+        rawValue={payout}
+        format={formatCurrency}
         delta={Math.abs(payoutDelta) > 1 ? `${payoutDelta > 0 ? '+' : '−'}${formatCurrency(Math.abs(payoutDelta))}` : undefined}
+        rawDelta={payoutDelta}
+        formatDelta={(v) => `${v > 0 ? '+' : '−'}${formatCurrency(Math.abs(v))}`}
+        showDelta={Math.abs(payoutDelta) > 1}
         deltaDirection={payoutDelta >= 0 ? 'positive' : 'negative'}
         reducedMotion={reducedMotion}
         icon={payoutDelta < -1 ? TrendingDown : TrendingUp}
@@ -107,21 +116,27 @@ export function FounderDeltaStrip() {
 function MetricTile({
   index,
   label,
-  value,
-  delta,
+  rawValue,
+  format,
+  rawDelta,
+  formatDelta,
+  showDelta,
   deltaDirection,
   reducedMotion,
   icon: Icon,
 }: {
   index: number;
   label: string;
-  value: string;
+  rawValue: number;
+  format: (n: number) => string;
   delta?: string;
+  rawDelta: number;
+  formatDelta: (n: number) => string;
+  showDelta: boolean;
   deltaDirection: 'positive' | 'negative';
   reducedMotion: boolean | null;
   icon: typeof TrendingUp;
 }) {
-  const hasDelta = !!delta;
   return (
     <motion.div
       className="glass-surface relative rounded-xl p-4 overflow-hidden group"
@@ -129,7 +144,6 @@ function MetricTile({
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...springTransition, delay: index * 0.05 }}
     >
-      {/* Subtle gradient accent along top edge */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       
       <div className="relative z-10">
@@ -137,36 +151,28 @@ function MetricTile({
           <span className="text-[10px] font-display uppercase tracking-[0.15em] text-muted-foreground">
             {label}
           </span>
-          {hasDelta && (
+          {showDelta && (
             <Icon className={`w-3.5 h-3.5 ${deltaDirection === 'positive' ? 'text-metric-positive' : 'text-metric-negative'}`} />
           )}
         </div>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={value}
-            initial={reducedMotion ? false : { opacity: 0, y: 8, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.95 }}
-            transition={springTransition}
-            className="font-heading text-2xl font-bold text-foreground tabular-nums"
-          >
-            {value}
-          </motion.div>
-        </AnimatePresence>
-        <AnimatePresence mode="wait">
-          {delta && (
-            <motion.div
-              key={delta}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 8 }}
-              transition={{ ...springTransition, delay: 0.15 }}
-              className={`text-[11px] font-display mt-1.5 tabular-nums ${deltaDirection === 'positive' ? 'text-metric-positive' : 'text-metric-negative'}`}
-            >
-              {delta}
-            </motion.div>
+        <div className="font-heading text-2xl font-bold text-foreground tabular-nums">
+          {reducedMotion ? (
+            format(rawValue)
+          ) : (
+            <AnimatedNumber value={rawValue} format={format} />
           )}
-        </AnimatePresence>
+        </div>
+        <div className="h-5 mt-1.5">
+          {showDelta && (
+            <div className={`text-[11px] font-display tabular-nums ${deltaDirection === 'positive' ? 'text-metric-positive' : 'text-metric-negative'}`}>
+              {reducedMotion ? (
+                formatDelta(rawDelta)
+              ) : (
+                <AnimatedNumber value={rawDelta} format={formatDelta} />
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </motion.div>
   );
