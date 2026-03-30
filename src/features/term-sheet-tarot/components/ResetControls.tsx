@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useSimulatorStore } from '../state/simulator-store';
 import { saveScenarioToCloud, saveSnapshotToCloud, createShareLink, logEvent } from '../services/supabase-service';
+import { exportTermSheetPDF } from '../services/pdf-export';
 import { AuthDialog } from './AuthDialog';
 
 export function ResetControls() {
