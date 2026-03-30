@@ -95,10 +95,20 @@ export async function fetchUserScenarios(userId: string) {
     .from('scenarios')
     .select('*')
     .eq('owner_id', userId)
+    .eq('is_preset', false)
     .order('updated_at', { ascending: false });
 
   if (error) throw error;
   return data;
+}
+
+export async function deleteScenarioFromCloud(scenarioId: string) {
+  const { error } = await supabase
+    .from('scenarios')
+    .delete()
+    .eq('id', scenarioId);
+
+  if (error) throw error;
 }
 
 export async function fetchPublicPresets() {
