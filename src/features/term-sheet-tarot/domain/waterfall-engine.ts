@@ -1,6 +1,9 @@
 import Big from 'big.js';
 import type { OwnershipSnapshot, DealTerms, WaterfallSnapshot, HolderPayout } from './types';
 
+function bigMin(a: Big, b: Big): Big { return a.lt(b) ? a : b; }
+function bigMax(a: Big, b: Big): Big { return a.gt(b) ? a : b; }
+
 export function computeWaterfall(
   ownership: OwnershipSnapshot,
   terms: DealTerms,
@@ -10,23 +13,16 @@ export function computeWaterfall(
   const exit = new Big(exitValue);
   const invest = new Big(investmentAmount);
 
-  // Find investor in holder percentages
   const investorHolder = ownership.holderPercentages.find(h => h.holderId === 'investor');
   const investorPct = investorHolder ? new Big(investorHolder.percentage).div(100) : new Big(0);
-
-  // Preference amount
   const preference = invest.times(new Big(terms.liquidationPreferenceMultiple));
 
   if (terms.participationMode === 'non-participating') {
-    // Non-participating: investor gets max(preference, as-converted share)
     const asConverted = exit.times(investorPct);
 
     if (preference.gte(asConverted)) {
-      // Preference wins
-      const investorTake = Big.min(preference, exit); // can't take more than exit
+      const investorTake = bigMin(preference, exit);
       const remaining = exit.minus(investorTake);
-
-      // Distribute remaining among non-investor holders
       const nonInvestorHolders = ownership.holderPercentages.filter(h => h.holderId !== 'investor');
       const totalNonInvestorPct = nonInvestorHolders.reduce((s, h) => s.plus(new Big(h.percentage)), new Big(0));
 
@@ -37,8 +33,8 @@ export function computeWaterfall(
         return {
           holderId: h.holderId,
           label: h.label,
-          payout: parseFloat(Big.max(share, new Big(0)).toFixed(2)),
-          percentage: exit.gt(0) ? parseFloat(Big.max(share, new Big(0)).div(exit).times(100).toFixed(2)) : 0,
+          payout: parseFloat(bigMax(share, new Big(0)).toFixed(2)),
+          percentage: exit.gt(0) ? parseFloat(bigMax(share, new Big(0)).div(exit).times(100).toFixed(2)) : 0,
         };
       });
 
@@ -58,7 +54,6 @@ export function computeWaterfall(
         distributionMode: 'preference',
       };
     } else {
-      // Conversion wins - distribute pro rata to all
       const holderPayouts: HolderPayout[] = ownership.holderPercentages.map(h => {
         const share = exit.times(new Big(h.percentage).div(100));
         return {
@@ -69,32 +64,24 @@ export function computeWaterfall(
         };
       });
 
-      const investorTotal = parseFloat(asConverted.toFixed(2));
-
       return {
         exitValue,
         investorPreferenceTake: 0,
         investorParticipationTake: 0,
-        investorTotalPayout: investorTotal,
+        investorTotalPayout: parseFloat(asConverted.toFixed(2)),
         holderPayouts,
         distributionMode: 'conversion',
       };
     }
   } else {
     // Participating preferred
-    // Step 1: investor takes preference off the top
-    const prefTake = Big.min(preference, exit);
-    let remaining = exit.minus(prefTake);
-
-    // Step 2: investor participates in remainder based on ownership %
+    const prefTake = bigMin(preference, exit);
+    const remaining = exit.minus(prefTake);
     const participationTake = remaining.gt(0) ? remaining.times(investorPct) : new Big(0);
     const investorTotal = prefTake.plus(participationTake);
-
-    // Cap investor total at exit value
-    const cappedInvestorTotal = Big.min(investorTotal, exit);
+    const cappedInvestorTotal = bigMin(investorTotal, exit);
     const actualParticipation = cappedInvestorTotal.minus(prefTake);
 
-    // Remaining for non-investor holders
     const nonInvestorRemaining = exit.minus(cappedInvestorTotal);
     const nonInvestorHolders = ownership.holderPercentages.filter(h => h.holderId !== 'investor');
     const totalNonInvestorPct = nonInvestorHolders.reduce((s, h) => s.plus(new Big(h.percentage)), new Big(0));
@@ -106,8 +93,8 @@ export function computeWaterfall(
       return {
         holderId: h.holderId,
         label: h.label,
-        payout: parseFloat(Big.max(share, new Big(0)).toFixed(2)),
-        percentage: exit.gt(0) ? parseFloat(Big.max(share, new Big(0)).div(exit).times(100).toFixed(2)) : 0,
+        payout: parseFloat(bigMax(share, new Big(0)).toFixed(2)),
+        percentage: exit.gt(0) ? parseFloat(bigMax(share, new Big(0)).div(exit).times(100).toFixed(2)) : 0,
       };
     });
 
