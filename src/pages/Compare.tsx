@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { AppHeader } from '../features/term-sheet-tarot/components/AppHeader';
 import { LegalFootnote } from '../features/term-sheet-tarot/components/LegalFootnote';
@@ -7,7 +8,7 @@ import { PRESET_SCENARIOS, CLAUSE_CATALOG } from '../features/term-sheet-tarot/d
 import { buildSnapshot } from '../features/term-sheet-tarot/domain/snapshot-builder';
 import { formatCurrency, formatPercent } from '../features/term-sheet-tarot/domain/formatting';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../features/term-sheet-tarot/domain/types';
-import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown } from 'lucide-react';
+import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown, Link2, Check } from 'lucide-react';
 import { exportComparisonPDF } from '../features/term-sheet-tarot/services/pdf-comparison-export';
 
 function useScenarioSide(scenarios: ScenarioDefinition[]) {
