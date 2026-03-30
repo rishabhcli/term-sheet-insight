@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { z } from 'zod';
 import { useSimulatorStore } from '../state/simulator-store';
+import { useAuth } from '../hooks/useAuth';
+import { saveScenarioToCloud, logEvent } from '../services/supabase-service';
 import type { ScenarioDefinition, BaseShareholder } from '../domain/types';
 import { formatCurrency } from '../domain/formatting';
 import { Plus, Trash2, Wand2, AlertCircle } from 'lucide-react';
