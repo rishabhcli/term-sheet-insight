@@ -2,6 +2,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSimulatorStore } from '../state/simulator-store';
 import { formatCurrency, formatPercent } from '../domain/formatting';
 import { TrendingDown, TrendingUp, Shield, ShieldAlert, ShieldOff } from 'lucide-react';
+import { AnimatedNumber } from './AnimatedNumber';
 
 const springTransition = { type: 'spring' as const, stiffness: 300, damping: 25 };
 
