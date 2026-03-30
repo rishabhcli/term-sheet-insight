@@ -296,7 +296,7 @@ function CompareMetric({ label, a, b, format }: { label: string; a: number; b: n
         <span className={`text-xs font-heading font-bold tabular-nums ${
           Math.abs(diff) < 0.01 ? 'text-muted-foreground' : diff > 0 ? 'text-metric-positive' : 'text-metric-negative'
         }`}>
-          {Math.abs(diff) < 0.01 ? '—' : `${diff > 0 ? '+' : ''}${format(diff)}`}
+          {Math.abs(diff) < 0.01 ? '—' : `${diff > 0 ? '+' : '-'}${format(Math.abs(diff))}`}
         </span>
       </div>
     </div>
