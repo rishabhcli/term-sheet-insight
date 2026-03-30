@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useSimulatorStore } from '../state/simulator-store';
 import { saveScenarioToCloud, saveSnapshotToCloud, createShareLink, logEvent } from '../services/supabase-service';
+import { exportTermSheetPDF } from '../services/pdf-export';
 import { AuthDialog } from './AuthDialog';
 
 export function ResetControls() {
@@ -51,6 +52,12 @@ export function ResetControls() {
     }
   };
 
+  const handlePDF = () => {
+    logEvent('pdf_export', { scenario: scenario.id, clauses: activeClauseIds }, user?.id);
+    const cleanSnap = useSimulatorStore.getState().cleanSnapshot;
+    exportTermSheetPDF(scenario, cleanSnap, currentSnapshot, activeClauseIds, exitValue);
+  };
+
   const handlePrint = () => {
     logEvent('export_triggered', { scenario: scenario.id }, user?.id);
     window.print();
@@ -81,10 +88,16 @@ export function ResetControls() {
           Copy link
         </button>
         <button
+          onClick={handlePDF}
+          className="px-4 py-2 text-sm font-display font-semibold rounded-lg bg-accent text-accent-foreground hover:bg-accent/80 transition-colors"
+        >
+          ↓ Export PDF
+        </button>
+        <button
           onClick={handlePrint}
           className="px-4 py-2 text-sm font-display font-semibold rounded-lg border border-border text-foreground hover:bg-accent transition-colors"
         >
-          Export / Print
+          Print
         </button>
       </div>
       {shareUrl && (
