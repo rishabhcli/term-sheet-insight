@@ -1,0 +1,56 @@
+name: Nightly E2E
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+env:
+  VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+  VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+  E2E_SUPABASE_EMAIL: ${{ secrets.E2E_SUPABASE_EMAIL }}
+  E2E_SUPABASE_PASSWORD: ${{ secrets.E2E_SUPABASE_PASSWORD }}
+
+jobs:
+  e2e-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: chromium
+            browser: chromium
+          - project: firefox
+            browser: firefox
+          - project: webkit
+            browser: webkit
+          - project: mobile
+            browser: webkit
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run ${{ matrix.project }} E2E
+        run: npx playwright test --project=${{ matrix.project }}
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-playwright-${{ matrix.project }}
+          path: |
+            playwright-report
+            test-results

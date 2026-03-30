@@ -8,6 +8,7 @@ import { PRESET_SCENARIOS, CLAUSE_CATALOG } from '../features/term-sheet-tarot/d
 import { buildSnapshot } from '../features/term-sheet-tarot/domain/snapshot-builder';
 import { formatCurrency, formatPercent } from '../features/term-sheet-tarot/domain/formatting';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../features/term-sheet-tarot/domain/types';
+import { copyText } from '../features/term-sheet-tarot/services/clipboard';
 import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown, Link2, Check } from 'lucide-react';
 import { exportComparisonPDF } from '../features/term-sheet-tarot/services/pdf-comparison-export';
 
@@ -91,6 +92,7 @@ function SidePanel({
       <select
         value={side.scenarioId}
         onChange={e => side.changeScenario(e.target.value)}
+        aria-label={`${label} scenario`}
         className="w-full bg-secondary/50 border border-border rounded-md px-3 py-2 text-sm text-foreground font-body focus:outline-none focus:ring-2 focus:ring-primary/40 transition-colors"
       >
         {scenarios.map(s => (
@@ -113,6 +115,7 @@ function SidePanel({
               <button
                 key={clause.id}
                 onClick={() => side.toggleClause(clause.id)}
+                aria-pressed={active}
                 className={`px-2.5 py-1 rounded-md text-[11px] font-display border transition-all ${
                   active
                     ? categoryColor
@@ -141,6 +144,7 @@ function SidePanel({
             step={side.scenario.exitRange.step}
             value={side.exitValue}
             onChange={e => side.setExitValue(Number(e.target.value))}
+            aria-label={`${label} exit value`}
             className="w-full h-6 cursor-pointer touch-manipulation relative z-10"
             style={{ background: 'transparent' }}
           />
@@ -224,7 +228,7 @@ export default function ComparePage() {
     params.set('be', String(sideB.exitValue));
 
     const url = `${window.location.origin}/compare?${params.toString()}`;
-    navigator.clipboard.writeText(url).then(() => {
+    copyText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });

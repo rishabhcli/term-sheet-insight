@@ -43,6 +43,7 @@ export function AuthDialog({ open, onClose }: { open: boolean; onClose: () => vo
         
         <button
           onClick={onClose}
+          aria-label="Close auth dialog"
           className="absolute top-4 right-4 p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
         >
           <X className="w-4 h-4" />
@@ -62,8 +63,9 @@ export function AuthDialog({ open, onClose }: { open: boolean; onClose: () => vo
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className="text-[10px] font-display uppercase tracking-[0.12em] text-muted-foreground mb-1.5 block">Email</label>
+              <label htmlFor="auth-email" className="text-[10px] font-display uppercase tracking-[0.12em] text-muted-foreground mb-1.5 block">Email</label>
               <input
+                id="auth-email"
                 type="email"
                 placeholder="you@company.com"
                 value={email}
@@ -73,8 +75,9 @@ export function AuthDialog({ open, onClose }: { open: boolean; onClose: () => vo
               />
             </div>
             <div>
-              <label className="text-[10px] font-display uppercase tracking-[0.12em] text-muted-foreground mb-1.5 block">Password</label>
+              <label htmlFor="auth-password" className="text-[10px] font-display uppercase tracking-[0.12em] text-muted-foreground mb-1.5 block">Password</label>
               <input
+                id="auth-password"
                 type="password"
                 placeholder="••••••••"
                 value={password}

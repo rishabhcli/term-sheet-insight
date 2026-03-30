@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useSimulatorStore } from '../state/simulator-store';
 import { saveScenarioToCloud, saveSnapshotToCloud, createShareLink, logEvent } from '../services/supabase-service';
+import { copyText, copyTextWithPromptFallback } from '../services/clipboard';
 import { exportTermSheetPDF } from '../services/pdf-export';
 import { AuthDialog } from './AuthDialog';
 import { Save, Link2, FileDown, Printer, RotateCcw, Check } from 'lucide-react';
@@ -20,12 +21,11 @@ export function ResetControls() {
     if (activeClauseIds.length > 0) params.set('clauses', activeClauseIds.join(','));
     params.set('exit', String(exitValue));
     const url = `${window.location.origin}/?${params.toString()}`;
-    navigator.clipboard.writeText(url).then(() => {
+    copyTextWithPromptFallback(url).then((copied) => {
+      if (!copied) return;
       setShareUrl(url);
       logEvent('share_link_created', { method: 'query-param', scenario: scenario.id }, user?.id);
       setTimeout(() => setShareUrl(null), 3000);
-    }).catch(() => {
-      prompt('Copy this link:', url);
     });
   };
 
@@ -40,7 +40,7 @@ export function ResetControls() {
       const snapshot = await saveSnapshotToCloud(scenario.id, currentSnapshot, exitValue, user.id);
       const share = await createShareLink(snapshot.id, user.id);
       setShareUrl(share.url);
-      await navigator.clipboard.writeText(share.url);
+      await copyText(share.url);
       logEvent('snapshot_saved', { scenario: scenario.id, clauses: activeClauseIds }, user.id);
       setTimeout(() => setShareUrl(null), 5000);
     } catch (err) {
