@@ -267,7 +267,7 @@ export function ScenarioBuilderForm() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="grid grid-cols-[1fr_120px_120px_32px] gap-2 items-end bg-card/50 border border-border rounded-md p-3"
+                className="grid grid-cols-1 sm:grid-cols-[1fr_120px_120px_32px] gap-2 items-end bg-card/50 border border-border rounded-md p-3"
               >
                 <div>
                   <label className={labelClass}>Name</label>
