@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-03-30T20:22:19.971Z",
+  "baseURL": "http://127.0.0.1:4174",
+  "viewport": {
+    "width": 1600,
+    "height": 900
+  },
+  "shots": [
+    {
+      "id": "hook_dirty_deal",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/hook_dirty_deal-take1.webm",
+      "durationSec": 17.56
+    },
+    {
+      "id": "hook_dirty_deal",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/hook_dirty_deal-take2.webm",
+      "durationSec": 17.64
+    },
+    {
+      "id": "baseline_clean",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/baseline_clean-take1.webm",
+      "durationSec": 26.68
+    },
+    {
+      "id": "economics_reveal",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/economics_reveal-take1.webm",
+      "durationSec": 34.48
+    },
+    {
+      "id": "control_reveal",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/control_reveal-take1.webm",
+      "durationSec": 24.28
+    },
+    {
+      "id": "exit_slider",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/exit_slider-take1.webm",
+      "durationSec": 27.24
+    },
+    {
+      "id": "compare_mode",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/compare_mode-take1.webm",
+      "durationSec": 29.44
+    },
+    {
+      "id": "compare_mode",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/compare_mode-take2.webm",
+      "durationSec": 29.36
+    },
+    {
+      "id": "builder_custom",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/builder_custom-take1.webm",
+      "durationSec": 24.56
+    },
+    {
+      "id": "builder_custom",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/builder_custom-take2.webm",
+      "durationSec": 26.6
+    },
+    {
+      "id": "share_link",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/share_link-take1.webm",
+      "durationSec": 25.32
+    },
+    {
+      "id": "share_link",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/share_link-take2.webm",
+      "durationSec": 25.12
+    },
+    {
+      "id": "how_it_works",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/how_it_works-take1.webm",
+      "durationSec": 24.4
+    }
+  ]
+}

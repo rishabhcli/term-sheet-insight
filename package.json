@@ -13,7 +13,13 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:all": "npm run test:coverage && npm run test:e2e",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "demo:capture": "node scripts/demo/capture.mjs",
+    "demo:process": "node scripts/demo/process-clips.mjs",
+    "demo:captions": "node scripts/demo/generate-captions.mjs",
+    "demo:render": "node scripts/demo/render.mjs",
+    "demo:tts": ".venv-demo/bin/python scripts/demo/generate-narration.py",
+    "demo:tts:audition": ".venv-demo/bin/python scripts/demo/generate-narration.py --audition"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -76,6 +82,8 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@playwright/test": "^1.57.0",
+    "@remotion/captions": "^4.0.441",
+    "@remotion/cli": "^4.0.441",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
@@ -93,6 +101,7 @@
     "jsdom": "^20.0.3",
     "lovable-tagger": "^1.1.13",
     "postcss": "^8.5.6",
+    "remotion": "^4.0.441",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",

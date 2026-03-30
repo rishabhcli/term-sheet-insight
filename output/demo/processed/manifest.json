@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-03-30T20:24:00.139Z",
+  "shots": [
+    {
+      "id": "hook_dirty_deal",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/hook_dirty_deal-take1.mp4",
+      "durationSec": 17.566667,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/hook_dirty_deal-take1.webm"
+    },
+    {
+      "id": "hook_dirty_deal",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/hook_dirty_deal-take2.mp4",
+      "durationSec": 17.633333,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/hook_dirty_deal-take2.webm"
+    },
+    {
+      "id": "baseline_clean",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/baseline_clean-take1.mp4",
+      "durationSec": 26.666667,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/baseline_clean-take1.webm"
+    },
+    {
+      "id": "economics_reveal",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/economics_reveal-take1.mp4",
+      "durationSec": 34.466667,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/economics_reveal-take1.webm"
+    },
+    {
+      "id": "control_reveal",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/control_reveal-take1.mp4",
+      "durationSec": 24.266667,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/control_reveal-take1.webm"
+    },
+    {
+      "id": "exit_slider",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/exit_slider-take1.mp4",
+      "durationSec": 27.233333,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/exit_slider-take1.webm"
+    },
+    {
+      "id": "compare_mode",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/compare_mode-take1.mp4",
+      "durationSec": 29.433333,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/compare_mode-take1.webm"
+    },
+    {
+      "id": "compare_mode",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/compare_mode-take2.mp4",
+      "durationSec": 29.366667,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/compare_mode-take2.webm"
+    },
+    {
+      "id": "builder_custom",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/builder_custom-take1.mp4",
+      "durationSec": 24.566667,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/builder_custom-take1.webm"
+    },
+    {
+      "id": "builder_custom",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/builder_custom-take2.mp4",
+      "durationSec": 26.6,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/builder_custom-take2.webm"
+    },
+    {
+      "id": "share_link",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/share_link-take1.mp4",
+      "durationSec": 25.333333,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/share_link-take1.webm"
+    },
+    {
+      "id": "share_link",
+      "take": 2,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/share_link-take2.mp4",
+      "durationSec": 25.133333,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/share_link-take2.webm"
+    },
+    {
+      "id": "how_it_works",
+      "take": 1,
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/processed/how_it_works-take1.mp4",
+      "durationSec": 24.4,
+      "source": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/raw/how_it_works-take1.webm"
+    }
+  ]
+}

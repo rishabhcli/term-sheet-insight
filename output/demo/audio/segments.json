@@ -1,0 +1,140 @@
+{
+  "voice": "af_sarah",
+  "sampleRate": 24000,
+  "segments": [
+    {
+      "id": "hook",
+      "title": "The Hook",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/hook.wav",
+      "durationSec": 17.901,
+      "voice": "af_sarah",
+      "speed": 1.08,
+      "speechDurationSec": 17.301,
+      "targetDurationSec": 12.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 0.42
+    },
+    {
+      "id": "product-explanation",
+      "title": "What It Is",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/product-explanation.wav",
+      "durationSec": 20.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 18.347,
+      "targetDurationSec": 20.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 1.473
+    },
+    {
+      "id": "baseline",
+      "title": "Clean Baseline",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/baseline.wav",
+      "durationSec": 26.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 13.653,
+      "targetDurationSec": 26.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 12.167
+    },
+    {
+      "id": "economics-reveal",
+      "title": "Economics Reveal",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/economics-reveal.wav",
+      "durationSec": 48.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 32.021,
+      "targetDurationSec": 48.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 15.799
+    },
+    {
+      "id": "control-reveal",
+      "title": "Control Reveal",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/control-reveal.wav",
+      "durationSec": 22.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 16.725,
+      "targetDurationSec": 22.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 5.095
+    },
+    {
+      "id": "exit-sensitivity",
+      "title": "Exit Sensitivity",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/exit-sensitivity.wav",
+      "durationSec": 30.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 18.603,
+      "targetDurationSec": 30.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 11.217
+    },
+    {
+      "id": "compare-mode",
+      "title": "Compare Mode",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/compare-mode.wav",
+      "durationSec": 45.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 22.656,
+      "targetDurationSec": 45.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 22.164
+    },
+    {
+      "id": "builder",
+      "title": "Build A Scenario",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/builder.wav",
+      "durationSec": 38.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 17.92,
+      "targetDurationSec": 38.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 19.9
+    },
+    {
+      "id": "shareability",
+      "title": "Share The Exact State",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/shareability.wav",
+      "durationSec": 30.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 19.008,
+      "targetDurationSec": 30.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 10.812
+    },
+    {
+      "id": "how-it-works",
+      "title": "How The Math Works",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/how-it-works.wav",
+      "durationSec": 24.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 15.829,
+      "targetDurationSec": 24.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 7.991
+    },
+    {
+      "id": "close",
+      "title": "Closing Montage",
+      "file": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/close.wav",
+      "durationSec": 18.0,
+      "voice": "af_sarah",
+      "speed": 0.72,
+      "speechDurationSec": 13.461,
+      "targetDurationSec": 18.0,
+      "leadPaddingSec": 0.18,
+      "tailPaddingSec": 4.359
+    }
+  ],
+  "narrationFile": "/Users/rishabhbansal/Documents/GitHub/term-sheet-insight/output/demo/audio/narration.wav",
+  "totalDurationSec": 318.901
+}

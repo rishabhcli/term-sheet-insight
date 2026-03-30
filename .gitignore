@@ -17,6 +17,26 @@ comparison-*.pdf
 term-sheet-*.pdf
 *.local
 
+# Demo pipeline intermediates
+output/demo/models/
+output/demo/staging/
+output/demo/tmp/
+output/demo/raw/*.webm
+!output/demo/raw/manifest.json
+output/demo/processed/*.mp4
+!output/demo/processed/manifest.json
+output/demo/audio/*.wav
+!output/demo/audio/narration.wav
+output/demo/audio/samples/
+!output/demo/audio/segments.json
+output/demo/term-sheet-tarot-demo-remotion.mp4
+output/demo/term-sheet-tarot-demo-master.mp4
+output/demo/term-sheet-tarot-demo-tight.mp4
+output/demo/render-props.json
+output/demo/narration.srt
+output/pdf/
+scripts/demo/__pycache__/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

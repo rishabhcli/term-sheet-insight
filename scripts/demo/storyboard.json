@@ -1,0 +1,229 @@
+{
+  "title": "Term Sheet Tarot 5-Minute Demo",
+  "fps": 30,
+  "width": 1600,
+  "height": 900,
+  "segments": [
+    {
+      "id": "hook",
+      "title": "The Hook",
+      "shotId": "hook_dirty_deal",
+      "narration": "Here’s the entire pitch in one screen. This is a five-million-dollar raise on a twenty-million pre. On a clean deal, founders take about twenty point four million at a thirty-million-dollar exit. Stack on three investor-friendly terms, and that drops to roughly twelve point three, with control getting tighter too.",
+      "targetDurationSec": 12,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.08,
+        "fromX": 0,
+        "toX": -24,
+        "fromY": 0,
+        "toY": -40
+      }
+    },
+    {
+      "id": "product-explanation",
+      "title": "What It Is",
+      "shotId": "baseline_clean",
+      "narration": "That’s Term Sheet Tarot. It’s a clause-reveal simulator for startup financings. You start with a standard venture deal, turn on specific terms, and instantly see what changes in ownership, payout, and board control.",
+      "targetDurationSec": 20,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.03,
+        "fromX": 0,
+        "toX": -12,
+        "fromY": 0,
+        "toY": -24
+      }
+    },
+    {
+      "id": "baseline",
+      "title": "Clean Baseline",
+      "shotId": "baseline_clean",
+      "trimStartSec": 8,
+      "narration": "This clean Nova scenario is the baseline: one-times non-participating preferred, no pool top-up, founder-led board. Nothing hidden, nothing dramatic.",
+      "targetDurationSec": 26,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1.02,
+        "toScale": 1.05,
+        "fromX": -12,
+        "toX": -28,
+        "fromY": -16,
+        "toY": -36
+      }
+    },
+    {
+      "id": "economics-reveal",
+      "title": "Economics Reveal",
+      "shotId": "economics_reveal",
+      "narration": "Now watch what happens when I add The Double Dip. The investor takes preference off the top and still participates in the rest. The payout bar reshuffles immediately, and the warning chips explain why this term matters. Then I add The Hidden Pool. Same round, same headline valuation, but now the option pool gets topped up before pricing, so dilution hits the existing holders first.",
+      "targetDurationSec": 48,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.1,
+        "fromX": 0,
+        "toX": -56,
+        "fromY": 0,
+        "toY": -48
+      }
+    },
+    {
+      "id": "control-reveal",
+      "title": "Control Reveal",
+      "shotId": "control_reveal",
+      "narration": "And this is where it gets more than financial. The Crown Seat changes governance. Board balance shifts, veto rights appear, and the app makes that visible without making you read a wall of legal text.",
+      "targetDurationSec": 22,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.08,
+        "fromX": 0,
+        "toX": 72,
+        "fromY": 0,
+        "toY": 16
+      }
+    },
+    {
+      "id": "exit-sensitivity",
+      "title": "Exit Sensitivity",
+      "shotId": "exit_slider",
+      "narration": "The exit slider is one of my favorite parts. Instead of a static term sheet, you can scrub through outcomes and see exactly when the economics turn. Low exit, medium exit, better exit, it all updates live.",
+      "targetDurationSec": 30,
+      "playbackRate": 1.05,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.08,
+        "fromX": 0,
+        "toX": 0,
+        "fromY": 0,
+        "toY": 48
+      }
+    },
+    {
+      "id": "compare-mode",
+      "title": "Compare Mode",
+      "shotId": "compare_mode",
+      "narration": "Compare mode makes the product more practical. On the left is a clause-heavy Nova deal. On the right is a later-stage Pulse round. Same signals, very different consequences. That’s useful for coaching, negotiation prep, or just building intuition fast.",
+      "targetDurationSec": 45,
+      "playbackRate": 1.05,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.06,
+        "fromX": 0,
+        "toX": 0,
+        "fromY": 0,
+        "toY": -24
+      }
+    },
+    {
+      "id": "builder",
+      "title": "Build A Scenario",
+      "shotId": "builder_custom",
+      "narration": "You’re not locked into canned examples either. I can build a custom scenario, launch it straight into the simulator, and the same analysis stack comes along for the ride. So this is a real model, not a fake walkthrough.",
+      "targetDurationSec": 38,
+      "playbackRate": 1.08,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.04,
+        "fromX": 0,
+        "toX": -16,
+        "fromY": 0,
+        "toY": -16
+      }
+    },
+    {
+      "id": "shareability",
+      "title": "Share The Exact State",
+      "shotId": "share_link",
+      "narration": "And once I’ve got a deal state I care about, I can copy a link and reopen the exact scenario with the same terms and exit assumptions. That makes it easy to send a specific deal view to a cofounder, advisor, or investor.",
+      "targetDurationSec": 30,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.05,
+        "fromX": 0,
+        "toX": 0,
+        "fromY": 0,
+        "toY": -20
+      }
+    },
+    {
+      "id": "how-it-works",
+      "title": "How The Math Works",
+      "shotId": "how_it_works",
+      "narration": "Under the hood, the app is transparent about the math. The How It Works page lays out the ownership calculation, the pre-money pool top-up logic, the liquidation waterfall, and the control model.",
+      "targetDurationSec": 24,
+      "playbackRate": 1,
+      "zoom": {
+        "fromScale": 1,
+        "toScale": 1.03,
+        "fromX": 0,
+        "toX": 0,
+        "fromY": 0,
+        "toY": -36
+      }
+    },
+    {
+      "id": "close",
+      "title": "Closing Montage",
+      "narration": "That’s the product. Move one clause, and the whole deal changes in front of you. For founders, that turns term-sheet intuition from vague to visual in a couple of minutes.",
+      "targetDurationSec": 18,
+      "montage": [
+        {
+          "shotId": "hook_dirty_deal",
+          "weight": 0.26,
+          "trimStartSec": 2,
+          "zoom": {
+            "fromScale": 1.02,
+            "toScale": 1.08,
+            "fromX": 0,
+            "toX": -20,
+            "fromY": 0,
+            "toY": -24
+          }
+        },
+        {
+          "shotId": "compare_mode",
+          "weight": 0.27,
+          "trimStartSec": 6,
+          "zoom": {
+            "fromScale": 1,
+            "toScale": 1.06,
+            "fromX": 0,
+            "toX": 0,
+            "fromY": 0,
+            "toY": -16
+          }
+        },
+        {
+          "shotId": "builder_custom",
+          "weight": 0.23,
+          "trimStartSec": 14,
+          "zoom": {
+            "fromScale": 1,
+            "toScale": 1.05,
+            "fromX": 0,
+            "toX": -14,
+            "fromY": 0,
+            "toY": -14
+          }
+        },
+        {
+          "shotId": "how_it_works",
+          "weight": 0.24,
+          "trimStartSec": 4,
+          "zoom": {
+            "fromScale": 1,
+            "toScale": 1.03,
+            "fromX": 0,
+            "toX": 0,
+            "fromY": 0,
+            "toY": -24
+          }
+        }
+      ]
+    }
+  ]
+}
