@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { z } from 'zod';
 import { useSimulatorStore } from '../state/simulator-store';
+import { useAuth } from '../hooks/useAuth';
+import { saveScenarioToCloud, logEvent } from '../services/supabase-service';
 import type { ScenarioDefinition, BaseShareholder } from '../domain/types';
 import { formatCurrency } from '../domain/formatting';
 import { Plus, Trash2, Wand2, AlertCircle } from 'lucide-react';
@@ -57,6 +59,7 @@ const defaultShareholders: BaseShareholder[] = [
 export function ScenarioBuilderForm() {
   const navigate = useNavigate();
   const loadScenario = useSimulatorStore(s => s.loadScenario);
+  const { user } = useAuth();
   const reducedMotion = useReducedMotion();
 
   const [name, setName] = useState('');
@@ -161,6 +164,15 @@ export function ScenarioBuilderForm() {
     };
 
     loadScenario(scenario);
+
+    // Auto-save to cloud if authenticated
+    if (user) {
+      saveScenarioToCloud(scenario, user.id).catch(err =>
+        console.error('Auto-save failed:', err)
+      );
+      logEvent('custom_scenario_created', { name: scenario.name }, user.id);
+    }
+
     navigate('/');
   };
 
