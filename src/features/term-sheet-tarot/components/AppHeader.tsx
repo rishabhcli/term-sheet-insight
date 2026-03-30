@@ -8,18 +8,8 @@ import { AuthDialog } from './AuthDialog';
 export function AppHeader({ minimal = false }: { minimal?: boolean }) {
   const location = useLocation();
   const { user, signOut, loading } = useAuth();
-  const { theme, setTheme } = useTheme();
   const [showAuth, setShowAuth] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const cycleTheme = () => {
-    if (theme === 'system') setTheme('light');
-    else if (theme === 'light') setTheme('dark');
-    else setTheme('system');
-  };
-
-  const ThemeIcon = theme === 'light' ? Sun : theme === 'dark' ? Moon : Monitor;
-  const themeLabel = theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'System';
 
   const navLinks = [
     { to: '/', label: 'Simulator' },
