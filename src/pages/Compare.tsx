@@ -7,7 +7,8 @@ import { PRESET_SCENARIOS, CLAUSE_CATALOG } from '../features/term-sheet-tarot/d
 import { buildSnapshot } from '../features/term-sheet-tarot/domain/snapshot-builder';
 import { formatCurrency, formatPercent } from '../features/term-sheet-tarot/domain/formatting';
 import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../features/term-sheet-tarot/domain/types';
-import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown } from 'lucide-react';
+import { exportComparisonPDF } from '../features/term-sheet-tarot/services/pdf-comparison-export';
 
 function useScenarioSide(scenarios: ScenarioDefinition[]) {
   const [scenarioId, setScenarioId] = useState(scenarios[0]?.id ?? '');
@@ -203,14 +204,26 @@ export default function ComparePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         >
-          <div className="flex items-center gap-3 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-              <GitCompareArrows className="w-4 h-4 text-primary" />
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <GitCompareArrows className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <h1 className="font-display text-2xl font-bold text-foreground">Compare Scenarios</h1>
+                <p className="text-xs text-muted-foreground font-body">Pick two scenarios, toggle different clauses, and see the impact side by side.</p>
+              </div>
             </div>
-            <div>
-              <h1 className="font-display text-2xl font-bold text-foreground">Compare Scenarios</h1>
-              <p className="text-xs text-muted-foreground font-body">Pick two scenarios, toggle different clauses, and see the impact side by side.</p>
-            </div>
+            <button
+              onClick={() => exportComparisonPDF(
+                { scenario: sideA.scenario, snapshot: sideA.snapshot, activeClauseIds: sideA.activeClauseIds, exitValue: sideA.exitValue },
+                { scenario: sideB.scenario, snapshot: sideB.snapshot, activeClauseIds: sideB.activeClauseIds, exitValue: sideB.exitValue },
+              )}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-display hover:bg-primary/20 transition-colors"
+            >
+              <FileDown className="w-4 h-4" />
+              <span className="hidden sm:inline">Export PDF</span>
+            </button>
           </div>
         </motion.div>
 
