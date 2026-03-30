@@ -14,6 +14,7 @@ import HowItWorksPage from "./pages/HowItWorks";
 import PrivacyPage from "./pages/Privacy";
 import TermsPage from "./pages/Terms";
 import BuildScenarioPage from "./pages/BuildScenario";
+import ComparePage from "./pages/Compare";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
