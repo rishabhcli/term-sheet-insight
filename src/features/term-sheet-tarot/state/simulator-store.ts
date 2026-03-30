@@ -54,6 +54,7 @@ export const useSimulatorStore = create<SimulatorState>((set, get) => ({
   loadScenario: (scenario) => {
     const exitValue = scenario.exitRange.default;
     const clean = safeSnapshot(scenario, [], exitValue);
+    trackEvent({ type: 'scenario_loaded', scenarioId: scenario.id, source: scenario.isPreset ? 'preset' : 'custom' });
     set({
       scenario,
       scenarioId: scenario.id,
