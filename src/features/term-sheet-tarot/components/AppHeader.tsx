@@ -20,7 +20,7 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
 
   return (
     <>
-      <header className="border-b border-border/60 bg-surface-glass/80 backdrop-blur-xl sticky top-0 z-50 no-print">
+      <header className="border-b border-border/60 bg-card/80 backdrop-blur-xl sticky top-0 z-50 no-print">
         <div className="container max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 min-w-0 group">
             {/* Logo mark */}
