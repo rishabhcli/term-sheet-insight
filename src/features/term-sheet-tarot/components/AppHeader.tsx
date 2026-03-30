@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon, Monitor } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import { useAuth } from '../hooks/useAuth';
 import { AuthDialog } from './AuthDialog';
 
