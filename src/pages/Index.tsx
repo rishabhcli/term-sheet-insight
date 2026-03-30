@@ -27,17 +27,17 @@ export default function SimulatorPage() {
     <div className="min-h-screen bg-background">
       <AppHeader />
 
-      <main className="container max-w-7xl mx-auto px-4 py-6 space-y-8">
+      <main className="container max-w-7xl mx-auto px-4 py-6 space-y-6">
         {errorState && (
-          <div className="bg-destructive/10 border border-destructive/30 rounded-lg px-4 py-3 flex items-center justify-between">
-            <span className="text-sm text-destructive font-body">{errorState}</span>
-            <button onClick={clearError} className="text-xs text-destructive underline font-display">Dismiss</button>
+          <div className="glass-surface rounded-xl px-4 py-3 flex items-center justify-between border-destructive/30">
+            <span className="text-[12px] text-destructive font-body">{errorState}</span>
+            <button onClick={clearError} className="text-[10px] text-destructive hover:underline font-display">Dismiss</button>
           </div>
         )}
 
         <ScenarioHeader />
 
-        {/* Outcome Stage - most prominent */}
+        {/* Key metrics */}
         <section aria-label="Deal outcomes">
           <FounderDeltaStrip />
         </section>
@@ -48,9 +48,9 @@ export default function SimulatorPage() {
           <PayoutVisualizer />
         </section>
 
-        {/* Two-column layout: Left = comparison + controls, Right = clause deck */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+        {/* Two-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 space-y-4">
             <DealComparisonPanel />
             <ExitSliderPanel />
             <ControlSummary />
