@@ -34,7 +34,8 @@ function ClauseCard({ clause }: { clause: ClauseDefinition }) {
     <motion.button
       onClick={() => toggleClause(clause.id)}
       className={`
-        relative w-full text-left rounded-lg border-2 p-5 cursor-pointer overflow-hidden
+        relative w-full text-left rounded-lg border-2 p-4 sm:p-5 cursor-pointer overflow-hidden
+        min-h-[72px] touch-manipulation
         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
         ${isActive
           ? `${styles.border} ${styles.bg}`
@@ -111,7 +112,7 @@ function ClauseCard({ clause }: { clause: ClauseDefinition }) {
 
         {/* Toggle indicator */}
         <div className={`
-          w-9 h-9 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 transition-colors duration-200
+          w-10 h-10 sm:w-9 sm:h-9 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 transition-colors duration-200
           ${isActive ? `${styles.border} ${styles.bg}` : 'border-muted-foreground/30'}
         `}>
           <AnimatePresence mode="wait">

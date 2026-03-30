@@ -58,7 +58,7 @@ export function ResetControls() {
 
   return (
     <>
-      <div className="flex flex-wrap gap-2 no-print">
+      <div className="flex flex-wrap gap-2 no-print [&>button]:min-h-[44px]">
         {hasDirty && (
           <button
             onClick={resetToClean}
