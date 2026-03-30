@@ -164,6 +164,15 @@ export function ScenarioBuilderForm() {
     };
 
     loadScenario(scenario);
+
+    // Auto-save to cloud if authenticated
+    if (user) {
+      saveScenarioToCloud(scenario, user.id).catch(err =>
+        console.error('Auto-save failed:', err)
+      );
+      logEvent('custom_scenario_created', { name: scenario.name }, user.id);
+    }
+
     navigate('/');
   };
 
