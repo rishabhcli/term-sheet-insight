@@ -112,7 +112,7 @@ function ClauseCard({ clause }: { clause: ClauseDefinition }) {
 
         {/* Toggle indicator */}
         <div className={`
-          w-9 h-9 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 transition-colors duration-200
+          w-10 h-10 sm:w-9 sm:h-9 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 transition-colors duration-200
           ${isActive ? `${styles.border} ${styles.bg}` : 'border-muted-foreground/30'}
         `}>
           <AnimatePresence mode="wait">
