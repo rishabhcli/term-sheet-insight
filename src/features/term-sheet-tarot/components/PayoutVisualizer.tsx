@@ -1,13 +1,35 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSimulatorStore } from '../state/simulator-store';
-import { formatCurrency, formatPercent } from '../domain/formatting';
+import { formatCurrency } from '../domain/formatting';
+
+const barSpring = { type: 'spring' as const, stiffness: 200, damping: 28, mass: 0.8 };
+
+const segmentVariants = {
+  initial: { width: '0%' },
+  animate: (pct: number) => ({
+    width: `${pct}%`,
+    transition: barSpring,
+  }),
+};
+
+const labelVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1, transition: { delay: 0.15, duration: 0.2 } },
+  exit: { opacity: 0, scale: 0.8, transition: { duration: 0.1 } },
+};
+
+const deltaVariants = {
+  hidden: { opacity: 0, y: -8, scale: 0.9 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 300, damping: 25, delay: 0.1 } },
+  exit: { opacity: 0, y: 4, transition: { duration: 0.15 } },
+};
 
 export function PayoutVisualizer() {
   const { currentSnapshot, cleanSnapshot, exitValue } = useSimulatorStore();
   const { waterfall } = currentSnapshot;
   const cleanWaterfall = cleanSnapshot.waterfall;
+  const reducedMotion = useReducedMotion();
 
-  // Ordered: investor, founders, pool, advisors
   const order = ['investor', 'founders', 'pool', 'advisors'];
   const colorMap: Record<string, string> = {
     investor: 'bg-payout-investor',
@@ -31,6 +53,7 @@ export function PayoutVisualizer() {
       payout: holder?.payout || 0,
       cleanPayout: cleanHolder?.payout || 0,
       percentage: holder?.percentage || 0,
+      cleanPercentage: cleanHolder?.percentage || 0,
       color: colorMap[id] || 'bg-muted',
     };
   }).filter(p => p.payout > 0 || p.cleanPayout > 0);
@@ -41,55 +64,93 @@ export function PayoutVisualizer() {
         <h2 className="font-display text-sm uppercase tracking-wider text-muted-foreground">
           Payout at Exit
         </h2>
-        <span className="font-display text-lg font-bold text-primary">
+        <motion.span
+          key={exitValue}
+          className="font-display text-lg font-bold text-primary"
+          initial={reducedMotion ? false : { opacity: 0.5, y: -2 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
           {formatCurrency(exitValue)}
-        </span>
+        </motion.span>
       </div>
 
-      {/* Stacked bar */}
-      <div className="relative h-12 rounded-lg overflow-hidden bg-secondary flex" role="img" aria-label="Payout distribution bar">
+      {/* Stacked bar with smooth segment transitions */}
+      <div className="relative h-14 rounded-lg overflow-hidden bg-secondary flex" role="img" aria-label="Payout distribution bar">
         {sortedPayouts.map(p => (
           <motion.div
             key={p.id}
-            className={`${p.color} h-full relative group`}
+            className={`${p.color} h-full relative overflow-hidden`}
+            custom={p.percentage}
+            variants={segmentVariants}
             initial={false}
-            animate={{ width: `${p.percentage}%` }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            animate="animate"
             title={`${p.label}: ${formatCurrency(p.payout)} (${p.percentage.toFixed(1)}%)`}
           >
-            {p.percentage > 10 && (
-              <span className="absolute inset-0 flex items-center justify-center text-xs font-display font-bold text-primary-foreground">
-                {formatCurrency(p.payout)}
-              </span>
-            )}
+            {/* Inner shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+
+            <AnimatePresence mode="wait">
+              {p.percentage > 12 && (
+                <motion.span
+                  key={`${p.id}-${formatCurrency(p.payout)}`}
+                  variants={labelVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="absolute inset-0 flex items-center justify-center text-xs font-display font-bold text-primary-foreground drop-shadow-sm"
+                >
+                  {formatCurrency(p.payout)}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.div>
         ))}
       </div>
 
-      {/* Legend */}
+      {/* Legend with animated deltas */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {sortedPayouts.map(p => {
           const delta = p.payout - p.cleanPayout;
           const hasDelta = Math.abs(delta) > 1;
           return (
-            <div key={p.id} className="space-y-1">
+            <motion.div
+              key={p.id}
+              className="space-y-1"
+              layout
+            >
               <div className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-sm ${p.color}`} />
+                <motion.div
+                  className={`w-3 h-3 rounded-sm ${p.color}`}
+                  animate={{ scale: hasDelta ? [1, 1.2, 1] : 1 }}
+                  transition={{ duration: 0.3 }}
+                />
                 <span className="text-xs text-muted-foreground font-body">{p.label}</span>
               </div>
-              <div className="font-display text-sm font-bold text-foreground">
+              <motion.div
+                key={`val-${p.payout}`}
+                className="font-display text-sm font-bold text-foreground"
+                initial={reducedMotion ? false : { opacity: 0.6 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
+              >
                 {formatCurrency(p.payout)}
-              </div>
-              {hasDelta && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`text-xs font-display ${delta > 0 ? 'text-metric-positive' : 'text-metric-negative'}`}
-                >
-                  {delta > 0 ? '+' : '−'}{formatCurrency(Math.abs(delta))}
-                </motion.div>
-              )}
-            </div>
+              </motion.div>
+              <AnimatePresence mode="wait">
+                {hasDelta && (
+                  <motion.div
+                    key={`delta-${delta}`}
+                    variants={deltaVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className={`text-xs font-display ${delta > 0 ? 'text-metric-positive' : 'text-metric-negative'}`}
+                  >
+                    {delta > 0 ? '+' : '−'}{formatCurrency(Math.abs(delta))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           );
         })}
       </div>

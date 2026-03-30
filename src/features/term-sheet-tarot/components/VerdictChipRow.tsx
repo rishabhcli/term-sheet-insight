@@ -1,9 +1,21 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSimulatorStore } from '../state/simulator-store';
+
+const chipVariants = {
+  hidden: { opacity: 0, scale: 0.7, y: 6 },
+  visible: (i: number) => ({
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 400, damping: 22, delay: i * 0.06 },
+  }),
+  exit: { opacity: 0, scale: 0.7, y: -4, transition: { duration: 0.15 } },
+};
 
 export function VerdictChipRow() {
   const { currentSnapshot } = useSimulatorStore();
   const { verdictChips } = currentSnapshot;
+  const reducedMotion = useReducedMotion();
 
   if (verdictChips.length === 0) return null;
 
@@ -15,13 +27,16 @@ export function VerdictChipRow() {
 
   return (
     <div className="flex flex-wrap gap-2" role="status" aria-label="Deal warnings">
-      <AnimatePresence>
-        {verdictChips.map(chip => (
+      <AnimatePresence mode="popLayout">
+        {verdictChips.map((chip, i) => (
           <motion.span
             key={chip.id}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            custom={i}
+            variants={chipVariants}
+            initial={reducedMotion ? false : "hidden"}
+            animate="visible"
+            exit="exit"
+            layout
             className={`px-3 py-1 rounded-full text-xs font-display font-semibold border ${severityStyles[chip.severity]}`}
           >
             {chip.label}
