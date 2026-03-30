@@ -11,11 +11,17 @@ import type { ScenarioDefinition, DealSnapshot, ClauseDefinition } from '../feat
 import { Shield, ShieldAlert, ShieldOff, GitCompareArrows, TrendingUp, TrendingDown, Minus, FileDown, Link2, Check } from 'lucide-react';
 import { exportComparisonPDF } from '../features/term-sheet-tarot/services/pdf-comparison-export';
 
-function useScenarioSide(scenarios: ScenarioDefinition[]) {
-  const [scenarioId, setScenarioId] = useState(scenarios[0]?.id ?? '');
-  const [activeClauseIds, setActiveClauseIds] = useState<string[]>([]);
+interface SideInit {
+  scenarioId?: string;
+  clauseIds?: string[];
+  exitValue?: number;
+}
+
+function useScenarioSide(scenarios: ScenarioDefinition[], init?: SideInit) {
+  const [scenarioId, setScenarioId] = useState(init?.scenarioId && scenarios.some(s => s.id === init.scenarioId) ? init.scenarioId : scenarios[0]?.id ?? '');
+  const [activeClauseIds, setActiveClauseIds] = useState<string[]>(init?.clauseIds ?? []);
   const scenario = scenarios.find(s => s.id === scenarioId) ?? scenarios[0];
-  const [exitValue, setExitValue] = useState(scenario.exitRange.default);
+  const [exitValue, setExitValue] = useState(init?.exitValue ?? scenario.exitRange.default);
 
   const toggleClause = (id: string) =>
     setActiveClauseIds(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
