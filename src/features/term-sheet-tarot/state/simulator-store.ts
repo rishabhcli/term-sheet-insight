@@ -68,10 +68,12 @@ export const useSimulatorStore = create<SimulatorState>((set, get) => ({
 
   toggleClause: (clauseId) => {
     const { activeClauseIds, scenario, exitValue } = get();
-    const next = activeClauseIds.includes(clauseId)
+    const wasActive = activeClauseIds.includes(clauseId);
+    const next = wasActive
       ? activeClauseIds.filter(id => id !== clauseId)
       : [...activeClauseIds, clauseId];
     const snapshot = safeSnapshot(scenario, next, exitValue);
+    trackEvent({ type: 'clause_toggled', clauseId, active: !wasActive, activeCount: next.length });
     set({ activeClauseIds: next, currentSnapshot: snapshot });
   },
 
