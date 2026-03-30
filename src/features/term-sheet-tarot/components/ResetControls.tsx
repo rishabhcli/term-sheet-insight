@@ -52,6 +52,12 @@ export function ResetControls() {
     }
   };
 
+  const handlePDF = () => {
+    logEvent('pdf_export', { scenario: scenario.id, clauses: activeClauseIds }, user?.id);
+    const cleanSnap = useSimulatorStore.getState().cleanSnapshot;
+    exportTermSheetPDF(scenario, cleanSnap, currentSnapshot, activeClauseIds, exitValue);
+  };
+
   const handlePrint = () => {
     logEvent('export_triggered', { scenario: scenario.id }, user?.id);
     window.print();
