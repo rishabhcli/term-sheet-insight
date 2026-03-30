@@ -88,10 +88,16 @@ export function ResetControls() {
           Copy link
         </button>
         <button
+          onClick={handlePDF}
+          className="px-4 py-2 text-sm font-display font-semibold rounded-lg bg-accent text-accent-foreground hover:bg-accent/80 transition-colors"
+        >
+          ↓ Export PDF
+        </button>
+        <button
           onClick={handlePrint}
           className="px-4 py-2 text-sm font-display font-semibold rounded-lg border border-border text-foreground hover:bg-accent transition-colors"
         >
-          Export / Print
+          Print
         </button>
       </div>
       {shareUrl && (
