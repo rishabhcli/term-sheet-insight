@@ -40,8 +40,12 @@ export function FounderDeltaStrip() {
       <MetricTile
         index={0}
         label="Founder Ownership"
-        value={formatPercent(ownershipPct)}
+        rawValue={ownershipPct}
+        format={formatPercent}
         delta={Math.abs(ownershipDelta) > 0.01 ? `${ownershipDelta > 0 ? '+' : ''}${ownershipDelta.toFixed(2)}%` : undefined}
+        rawDelta={ownershipDelta}
+        formatDelta={(v) => `${v > 0 ? '+' : ''}${v.toFixed(2)}%`}
+        showDelta={Math.abs(ownershipDelta) > 0.01}
         deltaDirection={ownershipDelta >= 0 ? 'positive' : 'negative'}
         reducedMotion={reducedMotion}
         icon={ownershipDelta < -0.01 ? TrendingDown : TrendingUp}
@@ -49,8 +53,12 @@ export function FounderDeltaStrip() {
       <MetricTile
         index={1}
         label="Founder Payout"
-        value={formatCurrency(payout)}
+        rawValue={payout}
+        format={formatCurrency}
         delta={Math.abs(payoutDelta) > 1 ? `${payoutDelta > 0 ? '+' : '−'}${formatCurrency(Math.abs(payoutDelta))}` : undefined}
+        rawDelta={payoutDelta}
+        formatDelta={(v) => `${v > 0 ? '+' : '−'}${formatCurrency(Math.abs(v))}`}
+        showDelta={Math.abs(payoutDelta) > 1}
         deltaDirection={payoutDelta >= 0 ? 'positive' : 'negative'}
         reducedMotion={reducedMotion}
         icon={payoutDelta < -1 ? TrendingDown : TrendingUp}
