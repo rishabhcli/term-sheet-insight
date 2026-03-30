@@ -14,6 +14,7 @@ import HowItWorksPage from "./pages/HowItWorks";
 import PrivacyPage from "./pages/Privacy";
 import TermsPage from "./pages/Terms";
 import BuildScenarioPage from "./pages/BuildScenario";
+import ComparePage from "./pages/Compare";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/fallback" element={<FallbackPage />} />
             <Route path="/scenarios" element={<ScenariosPage />} />
             <Route path="/build" element={<BuildScenarioPage />} />
+            <Route path="/compare" element={<ComparePage />} />
             <Route path="/share/:slug" element={<SharePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-it-works" element={<HowItWorksPage />} />
