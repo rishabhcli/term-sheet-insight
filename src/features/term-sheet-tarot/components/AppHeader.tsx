@@ -1,15 +1,26 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon, Monitor } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import { useAuth } from '../hooks/useAuth';
 import { AuthDialog } from './AuthDialog';
 
 export function AppHeader({ minimal = false }: { minimal?: boolean }) {
   const location = useLocation();
   const { user, signOut, loading } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [showAuth, setShowAuth] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const cycleTheme = () => {
+    if (theme === 'system') setTheme('light');
+    else if (theme === 'light') setTheme('dark');
+    else setTheme('system');
+  };
+
+  const ThemeIcon = theme === 'light' ? Sun : theme === 'dark' ? Moon : Monitor;
+  const themeLabel = theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'System';
 
   const navLinks = [
     { to: '/', label: 'Simulator' },
@@ -59,6 +70,16 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
                 ))}
               </nav>
             )}
+
+            {/* Theme toggle */}
+            <button
+              onClick={cycleTheme}
+              className="p-2 text-muted-foreground hover:text-foreground rounded-md border border-border/40 hover:bg-accent transition-all"
+              aria-label={`Theme: ${themeLabel}. Click to cycle.`}
+              title={`Theme: ${themeLabel}`}
+            >
+              <ThemeIcon className="w-4 h-4" />
+            </button>
 
             {/* Auth */}
             {!loading && (
