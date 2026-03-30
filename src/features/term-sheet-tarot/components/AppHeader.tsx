@@ -20,29 +20,38 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
 
   return (
     <>
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50 no-print">
+      <header className="border-b border-border/60 bg-surface-glass/80 backdrop-blur-xl sticky top-0 z-50 no-print">
         <div className="container max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 min-w-0">
-            <span className="font-display text-lg font-bold text-primary whitespace-nowrap">Term Sheet Tarot</span>
-            {!minimal && (
-              <span className="hidden lg:inline text-xs text-muted-foreground font-body truncate">
-                A clause-reveal simulator for startup deals
+          <Link to="/" className="flex items-center gap-3 min-w-0 group">
+            {/* Logo mark */}
+            <div className="relative w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-primary/40 transition-colors">
+              <span className="text-gold-shimmer font-display text-sm font-bold">T</span>
+              <div className="absolute -top-px -right-px w-2 h-2 rounded-full bg-primary/60" />
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="font-heading text-base font-bold text-foreground tracking-tight whitespace-nowrap">
+                Term Sheet Tarot
               </span>
-            )}
+              {!minimal && (
+                <span className="hidden lg:block text-[10px] text-muted-foreground font-body tracking-wide truncate">
+                  Clause-reveal simulator
+                </span>
+              )}
+            </div>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {/* Desktop nav */}
             {!minimal && (
-              <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+              <nav className="hidden md:flex items-center gap-0.5 bg-secondary/50 rounded-lg p-1" aria-label="Main navigation">
                 {navLinks.map(link => (
                   <Link
                     key={link.to}
                     to={link.to}
-                    className={`px-3 py-1.5 text-sm font-body rounded-md transition-colors ${
+                    className={`px-3 py-1.5 text-xs font-heading font-medium rounded-md transition-all duration-200 ${
                       location.pathname === link.to
-                        ? 'text-primary bg-primary/10'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                        ? 'text-primary-foreground bg-primary shadow-glow'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'
                     }`}
                   >
                     {link.label}
@@ -51,17 +60,20 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
               </nav>
             )}
 
-            {/* Auth button */}
+            {/* Auth */}
             {!loading && (
-              <div className="no-print">
+              <div className="no-print ml-2">
                 {user ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground font-body hidden sm:inline truncate max-w-[120px]">
-                      {user.email}
-                    </span>
+                    <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/50 border border-border/40">
+                      <div className="w-1.5 h-1.5 rounded-full bg-metric-positive animate-pulse" />
+                      <span className="text-[11px] text-muted-foreground font-body truncate max-w-[100px]">
+                        {user.email}
+                      </span>
+                    </div>
                     <button
                       onClick={() => signOut()}
-                      className="text-xs text-muted-foreground hover:text-foreground font-display px-2 py-1.5 rounded border border-border hover:bg-accent transition-colors"
+                      className="text-[11px] text-muted-foreground hover:text-foreground font-heading px-2.5 py-1.5 rounded-md border border-border/40 hover:bg-accent hover:border-border transition-all"
                     >
                       Sign out
                     </button>
@@ -69,7 +81,7 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
                 ) : (
                   <button
                     onClick={() => setShowAuth(true)}
-                    className="text-xs font-display font-semibold px-3 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                    className="text-[11px] font-heading font-semibold px-3.5 py-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-glow"
                   >
                     Sign in
                   </button>
@@ -98,7 +110,7 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
-              className="md:hidden overflow-hidden border-t border-border bg-card"
+              className="md:hidden overflow-hidden border-t border-border/40 bg-card/95 backdrop-blur-xl"
               aria-label="Mobile navigation"
             >
               <div className="px-4 py-3 space-y-1">
@@ -107,7 +119,7 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
                     key={link.to}
                     to={link.to}
                     onClick={() => setMobileOpen(false)}
-                    className={`block px-3 py-3 text-sm font-body rounded-md transition-colors ${
+                    className={`block px-3 py-3 text-sm font-heading rounded-md transition-colors ${
                       location.pathname === link.to
                         ? 'text-primary bg-primary/10'
                         : 'text-muted-foreground hover:text-foreground hover:bg-accent'
