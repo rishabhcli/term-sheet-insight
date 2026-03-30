@@ -86,7 +86,7 @@ export function PayoutVisualizer() {
                   animate={{ opacity: 1, y: 0 }}
                   className={`text-xs font-display ${delta > 0 ? 'text-metric-positive' : 'text-metric-negative'}`}
                 >
-                  {delta > 0 ? '+' : ''}{formatCurrency(delta)}
+                  {delta > 0 ? '+' : '−'}{formatCurrency(Math.abs(delta))}
                 </motion.div>
               )}
             </div>
