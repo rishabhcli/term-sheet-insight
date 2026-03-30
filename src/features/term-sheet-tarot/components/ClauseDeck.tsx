@@ -3,76 +3,28 @@ import { useSimulatorStore } from '../state/simulator-store';
 import { CLAUSE_CATALOG } from '../data/scenarios';
 import type { ClauseDefinition, ClauseCategory } from '../domain/types';
 
-const categoryStyles: Record<ClauseCategory, { border: string; bg: string; text: string; glow: string; activeBg: string }> = {
+const categoryStyles: Record<ClauseCategory, { border: string; bg: string; text: string; activeBg: string }> = {
   dilution: {
     border: 'border-clause-dilution',
     bg: 'bg-clause-dilution/10',
     text: 'text-clause-dilution',
-    glow: 'shadow-[0_0_30px_-4px_hsl(280,60%,60%,0.3)]',
     activeBg: 'hsl(280, 60%, 60%)',
   },
   economics: {
     border: 'border-clause-economics',
     bg: 'bg-clause-economics/10',
     text: 'text-clause-economics',
-    glow: 'shadow-[0_0_30px_-4px_hsl(38,80%,55%,0.3)]',
     activeBg: 'hsl(38, 80%, 55%)',
   },
   control: {
     border: 'border-clause-control',
     bg: 'bg-clause-control/10',
     text: 'text-clause-control',
-    glow: 'shadow-[0_0_30px_-4px_hsl(0,65%,55%,0.3)]',
     activeBg: 'hsl(0, 65%, 55%)',
   },
 };
 
-const cardVariants = {
-  inactive: {
-    scale: 1,
-    borderColor: 'hsl(220, 15%, 18%)',
-    transition: { type: 'spring', stiffness: 400, damping: 30 },
-  },
-  active: {
-    scale: 1,
-    transition: { type: 'spring', stiffness: 400, damping: 25 },
-  },
-  tap: {
-    scale: 0.97,
-    transition: { duration: 0.1 },
-  },
-  hover: {
-    scale: 1.01,
-    transition: { type: 'spring', stiffness: 500, damping: 30 },
-  },
-};
-
-const indicatorVariants = {
-  hidden: { scale: 0, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: { type: 'spring', stiffness: 500, damping: 20, delay: 0.05 },
-  },
-  exit: {
-    scale: 0,
-    opacity: 0,
-    transition: { duration: 0.15 },
-  },
-};
-
-const glowPulse = {
-  active: (color: string) => ({
-    boxShadow: [
-      `0 0 20px -4px ${color}40`,
-      `0 0 35px -4px ${color}25`,
-      `0 0 20px -4px ${color}40`,
-    ],
-    transition: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
-  }),
-};
-
-function ClauseCard({ clause, index }: { clause: ClauseDefinition; index: number }) {
+function ClauseCard({ clause }: { clause: ClauseDefinition }) {
   const { activeClauseIds, toggleClause } = useSimulatorStore();
   const isActive = activeClauseIds.includes(clause.id);
   const styles = categoryStyles[clause.category];
@@ -89,24 +41,33 @@ function ClauseCard({ clause, index }: { clause: ClauseDefinition; index: number
           : 'border-border bg-card hover:border-muted-foreground/30'
         }
       `}
-      variants={cardVariants}
-      initial="inactive"
-      animate={isActive ? 'active' : 'inactive'}
-      whileTap="tap"
-      whileHover="hover"
+      animate={isActive
+        ? { scale: 1, boxShadow: `0 0 25px -4px ${styles.activeBg}40` }
+        : { scale: 1, boxShadow: '0 0 0px 0px transparent' }
+      }
+      whileTap={{ scale: 0.97 }}
+      whileHover={{ scale: 1.01 }}
+      transition={{ type: 'spring' as const, stiffness: 400, damping: 28 }}
       layout
       role="switch"
       aria-checked={isActive}
       aria-label={`${clause.arcanaName}: ${clause.subtitle}`}
     >
-      {/* Animated glow border on active */}
+      {/* Glow pulse on active */}
       <AnimatePresence>
         {isActive && !reducedMotion && (
           <motion.div
             className="absolute inset-0 rounded-lg pointer-events-none"
             initial={{ opacity: 0 }}
-            animate={glowPulse.active(styles.activeBg)}
-            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+            animate={{
+              boxShadow: [
+                `0 0 20px -4px ${styles.activeBg}40`,
+                `0 0 35px -4px ${styles.activeBg}25`,
+                `0 0 20px -4px ${styles.activeBg}40`,
+              ],
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' as const }}
           />
         )}
       </AnimatePresence>
@@ -116,9 +77,10 @@ function ClauseCard({ clause, index }: { clause: ClauseDefinition; index: number
         {isActive && !reducedMotion && (
           <motion.div
             className="absolute inset-0 rounded-lg pointer-events-none"
-            initial={{ opacity: 0.3, background: `radial-gradient(circle at center, ${styles.activeBg}30, transparent 70%)` }}
+            style={{ background: `radial-gradient(circle at center, ${styles.activeBg}30, transparent 70%)` }}
+            initial={{ opacity: 0.4 }}
             animate={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            transition={{ duration: 0.6, ease: 'easeOut' as const }}
           />
         )}
       </AnimatePresence>
@@ -126,7 +88,7 @@ function ClauseCard({ clause, index }: { clause: ClauseDefinition; index: number
       <div className="relative flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <motion.div
-            className={`text-xs font-display uppercase tracking-wider mb-1`}
+            className="text-xs font-display uppercase tracking-wider mb-1"
             animate={{ color: isActive ? styles.activeBg : 'hsl(220, 10%, 50%)' }}
             transition={{ duration: 0.2 }}
           >
@@ -156,10 +118,10 @@ function ClauseCard({ clause, index }: { clause: ClauseDefinition; index: number
             {isActive && (
               <motion.div
                 key="dot"
-                variants={indicatorVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ type: 'spring' as const, stiffness: 500, damping: 20 }}
                 className={`w-3.5 h-3.5 rounded-full ${
                   clause.category === 'dilution' ? 'bg-clause-dilution' :
                   clause.category === 'economics' ? 'bg-clause-economics' : 'bg-clause-control'
@@ -179,8 +141,8 @@ export function ClauseDeck() {
       <h2 className="font-display text-sm uppercase tracking-wider text-muted-foreground mb-4">
         Clause Cards
       </h2>
-      {CLAUSE_CATALOG.map((clause, i) => (
-        <ClauseCard key={clause.id} clause={clause} index={i} />
+      {CLAUSE_CATALOG.map((clause) => (
+        <ClauseCard key={clause.id} clause={clause} />
       ))}
     </div>
   );

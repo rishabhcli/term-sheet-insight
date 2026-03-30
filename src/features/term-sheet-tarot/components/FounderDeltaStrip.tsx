@@ -2,26 +2,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSimulatorStore } from '../state/simulator-store';
 import { formatCurrency, formatPercent } from '../domain/formatting';
 
-const tileVariants = {
-  initial: { opacity: 0, y: 12 },
-  animate: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.05, type: 'spring', stiffness: 300, damping: 25 },
-  }),
-};
-
-const valueVariants = {
-  enter: { opacity: 0, y: 8, scale: 0.95 },
-  center: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 350, damping: 28 } },
-  exit: { opacity: 0, y: -8, scale: 0.95, transition: { duration: 0.12 } },
-};
-
-const deltaVariants = {
-  hidden: { opacity: 0, x: -8 },
-  visible: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 300, damping: 25, delay: 0.15 } },
-  exit: { opacity: 0, x: 8, transition: { duration: 0.1 } },
-};
+const springTransition = { type: 'spring' as const, stiffness: 300, damping: 25 };
 
 export function FounderDeltaStrip() {
   const { currentSnapshot, cleanSnapshot } = useSimulatorStore();
@@ -72,10 +53,9 @@ export function FounderDeltaStrip() {
       />
       <motion.div
         className="bg-card rounded-lg border border-border p-4 shadow-card overflow-hidden"
-        custom={2}
-        variants={tileVariants}
-        initial="initial"
-        animate="animate"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...springTransition, delay: 0.1 }}
       >
         <div className="text-xs text-muted-foreground font-display uppercase tracking-wider mb-2">
           Control
@@ -83,10 +63,10 @@ export function FounderDeltaStrip() {
         <AnimatePresence mode="wait">
           <motion.div
             key={controlStatus}
-            variants={valueVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
+            initial={reducedMotion ? false : { opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            transition={springTransition}
             className={`font-display text-xl font-bold ${controlColor}`}
           >
             {controlLabel}
@@ -95,10 +75,10 @@ export function FounderDeltaStrip() {
         <AnimatePresence>
           {controlChanged && (
             <motion.div
-              variants={deltaVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 8 }}
+              transition={{ ...springTransition, delay: 0.15 }}
               className="text-xs text-metric-negative font-display mt-1"
             >
               Changed from founder-led
@@ -128,10 +108,9 @@ function MetricTile({
   return (
     <motion.div
       className="bg-card rounded-lg border border-border p-4 shadow-card overflow-hidden"
-      custom={index}
-      variants={tileVariants}
-      initial="initial"
-      animate="animate"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ ...springTransition, delay: index * 0.05 }}
     >
       <div className="text-xs text-muted-foreground font-display uppercase tracking-wider mb-2">
         {label}
@@ -139,10 +118,10 @@ function MetricTile({
       <AnimatePresence mode="wait">
         <motion.div
           key={value}
-          variants={valueVariants}
-          initial={reducedMotion ? false : "enter"}
-          animate="center"
-          exit="exit"
+          initial={reducedMotion ? false : { opacity: 0, y: 8, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -8, scale: 0.95 }}
+          transition={springTransition}
           className="font-display text-2xl font-bold text-foreground"
         >
           {value}
@@ -152,10 +131,10 @@ function MetricTile({
         {delta && (
           <motion.div
             key={delta}
-            variants={deltaVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 8 }}
+            transition={{ ...springTransition, delay: 0.15 }}
             className={`text-xs font-display mt-1 ${deltaDirection === 'positive' ? 'text-metric-positive' : 'text-metric-negative'}`}
           >
             {delta}

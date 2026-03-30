@@ -1,17 +1,6 @@
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSimulatorStore } from '../state/simulator-store';
 
-const chipVariants = {
-  hidden: { opacity: 0, scale: 0.7, y: 6 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 22, delay: i * 0.06 },
-  }),
-  exit: { opacity: 0, scale: 0.7, y: -4, transition: { duration: 0.15 } },
-};
-
 export function VerdictChipRow() {
   const { currentSnapshot } = useSimulatorStore();
   const { verdictChips } = currentSnapshot;
@@ -31,11 +20,10 @@ export function VerdictChipRow() {
         {verdictChips.map((chip, i) => (
           <motion.span
             key={chip.id}
-            custom={i}
-            variants={chipVariants}
-            initial={reducedMotion ? false : "hidden"}
-            animate="visible"
-            exit="exit"
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.7, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: -4 }}
+            transition={{ type: 'spring' as const, stiffness: 400, damping: 22, delay: i * 0.06 }}
             layout
             className={`px-3 py-1 rounded-full text-xs font-display font-semibold border ${severityStyles[chip.severity]}`}
           >

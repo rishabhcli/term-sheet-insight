@@ -4,26 +4,6 @@ import { formatCurrency } from '../domain/formatting';
 
 const barSpring = { type: 'spring' as const, stiffness: 200, damping: 28, mass: 0.8 };
 
-const segmentVariants = {
-  initial: { width: '0%' },
-  animate: (pct: number) => ({
-    width: `${pct}%`,
-    transition: barSpring,
-  }),
-};
-
-const labelVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1, transition: { delay: 0.15, duration: 0.2 } },
-  exit: { opacity: 0, scale: 0.8, transition: { duration: 0.1 } },
-};
-
-const deltaVariants = {
-  hidden: { opacity: 0, y: -8, scale: 0.9 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 300, damping: 25, delay: 0.1 } },
-  exit: { opacity: 0, y: 4, transition: { duration: 0.15 } },
-};
-
 export function PayoutVisualizer() {
   const { currentSnapshot, cleanSnapshot, exitValue } = useSimulatorStore();
   const { waterfall } = currentSnapshot;
@@ -53,7 +33,6 @@ export function PayoutVisualizer() {
       payout: holder?.payout || 0,
       cleanPayout: cleanHolder?.payout || 0,
       percentage: holder?.percentage || 0,
-      cleanPercentage: cleanHolder?.percentage || 0,
       color: colorMap[id] || 'bg-muted',
     };
   }).filter(p => p.payout > 0 || p.cleanPayout > 0);
@@ -75,29 +54,28 @@ export function PayoutVisualizer() {
         </motion.span>
       </div>
 
-      {/* Stacked bar with smooth segment transitions */}
+      {/* Stacked bar */}
       <div className="relative h-14 rounded-lg overflow-hidden bg-secondary flex" role="img" aria-label="Payout distribution bar">
         {sortedPayouts.map(p => (
           <motion.div
             key={p.id}
             className={`${p.color} h-full relative overflow-hidden`}
-            custom={p.percentage}
-            variants={segmentVariants}
             initial={false}
-            animate="animate"
+            animate={{ width: `${p.percentage}%` }}
+            transition={barSpring}
             title={`${p.label}: ${formatCurrency(p.payout)} (${p.percentage.toFixed(1)}%)`}
           >
-            {/* Inner shine effect */}
+            {/* Inner shine */}
             <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
 
             <AnimatePresence mode="wait">
               {p.percentage > 12 && (
                 <motion.span
                   key={`${p.id}-${formatCurrency(p.payout)}`}
-                  variants={labelVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ delay: 0.15, duration: 0.2 }}
                   className="absolute inset-0 flex items-center justify-center text-xs font-display font-bold text-primary-foreground drop-shadow-sm"
                 >
                   {formatCurrency(p.payout)}
@@ -108,22 +86,18 @@ export function PayoutVisualizer() {
         ))}
       </div>
 
-      {/* Legend with animated deltas */}
+      {/* Legend */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {sortedPayouts.map(p => {
           const delta = p.payout - p.cleanPayout;
           const hasDelta = Math.abs(delta) > 1;
           return (
-            <motion.div
-              key={p.id}
-              className="space-y-1"
-              layout
-            >
+            <motion.div key={p.id} className="space-y-1" layout>
               <div className="flex items-center gap-2">
                 <motion.div
                   className={`w-3 h-3 rounded-sm ${p.color}`}
-                  animate={{ scale: hasDelta ? [1, 1.2, 1] : 1 }}
-                  transition={{ duration: 0.3 }}
+                  animate={hasDelta ? { scale: [1, 1.3, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.35 }}
                 />
                 <span className="text-xs text-muted-foreground font-body">{p.label}</span>
               </div>
@@ -140,10 +114,10 @@ export function PayoutVisualizer() {
                 {hasDelta && (
                   <motion.div
                     key={`delta-${delta}`}
-                    variants={deltaVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
+                    initial={{ opacity: 0, y: -8, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ type: 'spring' as const, stiffness: 300, damping: 25, delay: 0.1 }}
                     className={`text-xs font-display ${delta > 0 ? 'text-metric-positive' : 'text-metric-negative'}`}
                   >
                     {delta > 0 ? '+' : '−'}{formatCurrency(Math.abs(delta))}
