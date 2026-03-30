@@ -12,6 +12,7 @@ import AboutPage from "./pages/About";
 import HowItWorksPage from "./pages/HowItWorks";
 import PrivacyPage from "./pages/Privacy";
 import TermsPage from "./pages/Terms";
+import BuildScenarioPage from "./pages/BuildScenario";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/fallback" element={<FallbackPage />} />
             <Route path="/scenarios" element={<ScenariosPage />} />
+            <Route path="/build" element={<BuildScenarioPage />} />
             <Route path="/share/:slug" element={<SharePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-it-works" element={<HowItWorksPage />} />
