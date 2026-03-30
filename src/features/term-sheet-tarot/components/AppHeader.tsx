@@ -60,15 +60,8 @@ export function AppHeader({ minimal = false }: { minimal?: boolean }) {
               </nav>
             )}
 
-            {/* Theme toggle */}
-            <button
-              onClick={cycleTheme}
-              className="p-2 text-muted-foreground hover:text-foreground rounded-md border border-border/40 hover:bg-accent transition-all"
-              aria-label={`Theme: ${themeLabel}. Click to cycle.`}
-              title={`Theme: ${themeLabel}`}
-            >
-              <ThemeIcon className="w-4 h-4" />
-            </button>
+
+
 
             {/* Auth */}
             {!loading && (
