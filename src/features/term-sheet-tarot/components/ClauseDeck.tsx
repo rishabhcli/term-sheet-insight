@@ -34,7 +34,8 @@ function ClauseCard({ clause }: { clause: ClauseDefinition }) {
     <motion.button
       onClick={() => toggleClause(clause.id)}
       className={`
-        relative w-full text-left rounded-lg border-2 p-5 cursor-pointer overflow-hidden
+        relative w-full text-left rounded-lg border-2 p-4 sm:p-5 cursor-pointer overflow-hidden
+        min-h-[72px] touch-manipulation
         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
         ${isActive
           ? `${styles.border} ${styles.bg}`
